@@ -394,10 +394,9 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if query.data == "registered":
         cancel_reminder(state)
         state["step"] = "awaiting_id"
-        await context.bot.send_photo(
+        await context.bot.send_message(
             chat_id=chat_id,
-            photo="AgACAgUAAxkBAAFMQkRqLDe4E5mM4qA8fzYNOfCLl_KYqAACTw9rG986YVXIOJi71DlRBwEAAwIAA3kAAzwE",
-            caption=(
+            text=(
                 f"<b>{E_PARTY} Congratulations! You're just one step away! {E_FIRE}\n\n"
                 f"━━━━━━━━━━━━━━━━━━━\n\n"
                 f"{E_EYES} Follow these steps to find your Trader ID:\n\n"
@@ -412,10 +411,9 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     elif query.data == "try_again":
         state["step"] = "awaiting_id"
-        await context.bot.send_photo(
+        await context.bot.send_message(
             chat_id=chat_id,
-            photo="AgACAgUAAxkBAAFMQkRqLDe4E5mM4qA8fzYNOfCLl_KYqAACTw9rG986YVXIOJi71DlRBwEAAwIAA3kAAzwE",
-            caption=(
+            text=(
                 f"<b>🔄 Please send your correct Trader ID {E_EYES}\n\n"
                 f"━━━━━━━━━━━━━━━━━━━\n\n"
                 f"{E_EYES} Follow these steps to find your Trader ID:\n\n"
