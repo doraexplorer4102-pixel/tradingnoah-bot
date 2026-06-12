@@ -37,7 +37,10 @@ E_MONEY   = pe("5224257782013769471", "💰")
 E_STAR    = pe("5438496463044752972", "⭐")
 E_CROWN   = pe("5217822164362739968", "👑")
 E_TROPHY  = pe("5413566144986503832", "🏆")
-E_CHART   = pe("5244837092042750681", "📈")  # NEW ID
+E_CHART   = pe("5244837092042750681", "📈")
+E_GLOBE   = pe("5224450179368767019", "🌍")
+E_NEW     = pe("5382357040008021292", "🆕")
+E_PERSON  = pe("5217797330861826981", "👩200d💻")
 E_GIFT    = pe("5203996991054432397", "🎁")
 E_CHECK   = pe("5206607081334906820", "✅")
 E_CROSS   = pe("5210952531676504517", "❌")
@@ -329,8 +332,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_media_group(chat_id=chat_id, media=media)
 
     await update.message.reply_text(
-        f"<b>👩‍💻 Bro, What Is Your Name And What's Your Country? 🌍\n\n"
-        f"🆕 It Will Help Us To Understand Each Other Better {E_TROPHY}</b>",
+        f"<b>{E_PERSON} Bro, What Is Your Name And What's Your Country? {E_GLOBE}\n\n"
+        f"{E_NEW} It Will Help Us To Understand Each Other Better {E_TROPHY}</b>",
         parse_mode=ParseMode.HTML,
         reply_markup=support_keyboard()
     )
