@@ -277,23 +277,14 @@ async def verify_id_then_respond(uid, chat_id, bot):
         # Update message to show we are still checking
         await bot.edit_message_text(
             chat_id=chat_id, message_id=msg.message_id,
-            text=f"<b>{E_EYES} Verifying ID <code>{uid}</code>...\n\n{E_CLOCK} Please wait up to 60 seconds...</b>",
+            text=f"<b>{E_EYES} Verifying ID <code>{uid}</code>...\n\n{E_CLOCK} Please wait a moment...</b>",
             parse_mode=ParseMode.HTML
         )
-        for i in range(12):  # 12 x 5s = 60 seconds
+        for i in range(4):  # 4 x 5s = 20 seconds
             await asyncio.sleep(5)
             trader = db_get_trader(uid)
             if trader:
                 break
-            # Update countdown every 20 seconds
-            if i == 3:
-                try:
-                    await bot.edit_message_text(
-                        chat_id=chat_id, message_id=msg.message_id,
-                        text=f"<b>{E_EYES} Still checking ID <code>{uid}</code>...\n\n{E_CLOCK} Almost done, please wait...</b>",
-                        parse_mode=ParseMode.HTML
-                    )
-                except: pass
 
     if not trader:
         state["step"] = "awaiting_id"
@@ -401,7 +392,8 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     elif query.data == "try_again":
         state["step"] = "awaiting_id"
-        await query.message.reply_photo(
+        await context.bot.send_photo(
+            chat_id=chat_id,
             photo="AgACAgUAAxkBAAFMQkRqLDe4E5mM4qA8fzYNOfCLl_KYqAACTw9rG986YVXIOJi71DlRBwEAAwIAA3kAAzwE",
             caption=(
                 f"<b>🔄 Please send your correct Trader ID {E_EYES}\n\n"
