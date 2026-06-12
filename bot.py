@@ -474,11 +474,22 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
 
 async def photo_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Capture photo file IDs sent directly to bot"""
+    """Capture photo and video file IDs sent directly to bot"""
     if update.message.photo:
         fid = update.message.photo[-1].file_id
         print(f"PHOTO FILE ID: {fid}")
-        await update.message.reply_text(f"FILE ID:\n{fid}")
+        await update.message.reply_text(f"PHOTO FILE ID:
+{fid}")
+    elif update.message.video:
+        fid = update.message.video.file_id
+        print(f"VIDEO FILE ID: {fid}")
+        await update.message.reply_text(f"VIDEO FILE ID:
+{fid}")
+    elif update.message.document:
+        fid = update.message.document.file_id
+        print(f"DOCUMENT FILE ID: {fid}")
+        await update.message.reply_text(f"DOCUMENT FILE ID:
+{fid}")
 
 async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
@@ -578,7 +589,7 @@ async def main():
     tg_app = ApplicationBuilder().token(TOKEN).build()
     tg_app.add_handler(CommandHandler("start", start))
     tg_app.add_handler(CallbackQueryHandler(button_handler))
-    tg_app.add_handler(MessageHandler(filters.PHOTO, photo_handler))
+    tg_app.add_handler(MessageHandler(filters.PHOTO | filters.VIDEO | filters.Document.ALL, photo_handler))
     tg_app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, message_handler))
 
     await tg_app.initialize()
