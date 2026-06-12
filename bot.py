@@ -428,10 +428,9 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
     elif query.data == "claim_bonus":
-        await context.bot.send_photo(
+        await context.bot.send_message(
             chat_id=chat_id,
-            photo=BONUS_PHOTO,
-            caption=(
+            text=(
                 f"<b>{E_GIFT} 50% Deposit Bonus Code FREE!! {E_PARTY}\n\n"
                 f"{E_FIRE} Code: <code>NOAH50</code> {E_FIRE}\n\n"
                 f"Enter promo code <b>NOAH50</b> when depositing.\n\n"
