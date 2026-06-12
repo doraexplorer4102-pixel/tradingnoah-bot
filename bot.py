@@ -24,7 +24,7 @@ MIN_DEPOSIT  = 20
 
 VIDEO_REMINDER = "BAACAgUAAxkBAAFMQIxqLCy8iLgzzjwMiMFm4ahJi-N-iwACQCQAAmS9YFWS4sMNJoZYFjwE"
 VIDEO_DEPOSIT  = "BQACAgUAAxkBAAFMQI5qLCzLxgL0oM6v_DRoWsq0R6ecMAACQiQAAmS9YFXmR4aJiqZyKjwE"
-BONUS_PHOTO    = "AgACAgUAAxkBAAMZaidQ8AAB-XcWZ92dfh1Nyj12vp9tAAL9D2sb2mc5VTJ5ySC9Sop4AQADAgADeQADOwQ"
+BONUS_PHOTO    = "AgACAgUAAxkBAAFMQkRqLDe4E5mM4qA8fzYNOfCLl_KYqAACTw9rG986YVXIOJi71DlRBwEAAwIAA3kAAzwE"
 
 def pe(eid, fb): return f'<tg-emoji emoji-id="{eid}">{fb}</tg-emoji>'
 
@@ -271,13 +271,29 @@ async def verify_id_then_respond(uid, chat_id, bot):
         parse_mode=ParseMode.HTML
     )
 
+    # Check DB — wait up to 60 seconds for postback to arrive
     trader = db_get_trader(uid)
     if not trader:
-        for _ in range(10):
-            await asyncio.sleep(3)
+        # Update message to show we are still checking
+        await bot.edit_message_text(
+            chat_id=chat_id, message_id=msg.message_id,
+            text=f"<b>{E_EYES} Verifying ID <code>{uid}</code>...\n\n{E_CLOCK} Please wait up to 60 seconds...</b>",
+            parse_mode=ParseMode.HTML
+        )
+        for i in range(12):  # 12 x 5s = 60 seconds
+            await asyncio.sleep(5)
             trader = db_get_trader(uid)
             if trader:
                 break
+            # Update countdown every 20 seconds
+            if i == 3:
+                try:
+                    await bot.edit_message_text(
+                        chat_id=chat_id, message_id=msg.message_id,
+                        text=f"<b>{E_EYES} Still checking ID <code>{uid}</code>...\n\n{E_CLOCK} Almost done, please wait...</b>",
+                        parse_mode=ParseMode.HTML
+                    )
+                except: pass
 
     if not trader:
         state["step"] = "awaiting_id"
@@ -322,6 +338,20 @@ async def verify_id_then_respond(uid, chat_id, bot):
         )
     else:
         state["step"] = "awaiting_deposit"
+        # If deposit exists but less than minimum, tell them directly
+        if dep > 0 and dep < MIN_DEPOSIT:
+            await bot.edit_message_text(
+                chat_id=chat_id, message_id=msg.message_id,
+                text=(
+                    f"<b>{E_CHECK} ID <code>{uid}</code> verified! {E_WARN}\n\n"
+                    f"Your current balance: <b>${dep:.2f}</b>\n\n"
+                    f"{E_MONEY} You need to deposit minimum <b>${MIN_DEPOSIT}</b> to unlock VIP!\n\n"
+                    f"Please deposit <b>${MIN_DEPOSIT - dep:.2f} more</b> and click Re-Check {E_HAND}</b>"
+                ),
+                parse_mode=ParseMode.HTML,
+                reply_markup=recheck_keyboard()
+            )
+            return
         await bot.edit_message_text(
             chat_id=chat_id, message_id=msg.message_id,
             text=f"<b>{E_CHECK} ID <code>{uid}</code> linked! {E_EYES} Checking deposit...</b>",
@@ -371,10 +401,17 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     elif query.data == "try_again":
         state["step"] = "awaiting_id"
-        await query.message.reply_text(
-            f"<b>🔄 Send your correct Trader ID {E_EYES}\n\n"
-            f"👉 Quotex dashboard → <b>My Account</b>\n\n"
-            f"Type and send your ID number {E_HAND}</b>",
+        await query.message.reply_photo(
+            photo="AgACAgUAAxkBAAFMQkRqLDe4E5mM4qA8fzYNOfCLl_KYqAACTw9rG986YVXIOJi71DlRBwEAAwIAA3kAAzwE",
+            caption=(
+                f"<b>🔄 Please send your correct Trader ID {E_EYES}\n\n"
+                f"━━━━━━━━━━━━━━━━━━━\n\n"
+                f"{E_EYES} Follow these steps to find your Trader ID:\n\n"
+                f"1️⃣ Open your <b>Quotex account</b>\n"
+                f"2️⃣ Go to <b>My Account</b>\n"
+                f"3️⃣ You will see your <b>Trader ID</b> there\n"
+                f"4️⃣ Reply with that <b>8-digit code</b> {E_HAND}</b>"
+            ),
             parse_mode=ParseMode.HTML, reply_markup=support_keyboard()
         )
 
