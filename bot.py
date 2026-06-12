@@ -194,6 +194,7 @@ async def run_start_sequence(chat_id, bot, state):
             video_note="DQACAgUAAxkBAAMbaidRKZuu4TnoWbcqd3A_KLQByFEAAs4cAAJfGjFXsw34l8lliF47BA"
         )
 
+        print("Step 3: sending photo")  # DEBUG
         # 3) Photo + buttons
         await bot.send_photo(
             chat_id=chat_id,
@@ -211,9 +212,11 @@ async def run_start_sequence(chat_id, bot, state):
             ])
         )
 
+        print("Step 4: waiting 10s")  # DEBUG
         # 4) Wait 10 seconds
         await asyncio.sleep(10)
 
+        print("Step 5: intro message")  # DEBUG
         # 5) Intro message
         await bot.send_message(
             chat_id=chat_id,
@@ -225,6 +228,7 @@ async def run_start_sequence(chat_id, bot, state):
             parse_mode=ParseMode.HTML
         )
 
+        print("Step 6: media album")  # DEBUG
         # 6) Media album
         media = [
             InputMediaVideo(media="BAACAgUAAxkBAAMtaidXNeAzsfiXzbzTipXYriM1QccAAr4fAALaZzlV3a9DaWKShwg7BA"),
@@ -254,6 +258,7 @@ async def run_start_sequence(chat_id, bot, state):
         # 8) Wait 20 seconds
         await asyncio.sleep(20)
 
+        print("Step 9: registration video")  # DEBUG
         # 9) Registration video
         await bot.send_video(
             chat_id=chat_id,
