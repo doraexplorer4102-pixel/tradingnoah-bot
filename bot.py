@@ -38,9 +38,6 @@ E_STAR    = pe("5438496463044752972", "⭐")
 E_CROWN   = pe("5217822164362739968", "👑")
 E_TROPHY  = pe("5413566144986503832", "🏆")
 E_CHART   = pe("5244837092042750681", "📈")
-E_GLOBE   = pe("5224450179368767019", "🌍")
-E_NEW     = pe("5382357040008021292", "🆕")
-E_PERSON  = pe("5217797330861826981", "👩200d💻")
 E_GIFT    = pe("5203996991054432397", "🎁")
 E_CHECK   = pe("5206607081334906820", "✅")
 E_CROSS   = pe("5210952531676504517", "❌")
@@ -53,9 +50,12 @@ E_CLOCK   = pe("5431807687136395567", "⏰")
 E_PARTY   = pe("5461151367559141950", "🎉")
 E_HAND    = pe("5305522282695768654", "👇")
 E_EYES    = pe("5210956306952758910", "👀")
-E_TARGET  = pe("6185808707985608949", "🎯")  # NEW
-E_THUMBS  = pe("5337080053119336309", "👍")  # NEW
-E_CHAT    = pe("5443038326535759644", "💬")  # NEW
+E_TARGET  = pe("6185808707985608949", "🎯")
+E_THUMBS  = pe("5337080053119336309", "👍")
+E_CHAT    = pe("5443038326535759644", "💬")
+E_GLOBE   = pe("5224450179368767019", "🌍")
+E_NEW     = pe("5382357040008021292", "🆕")
+E_PERSON  = pe("5217797330861826981", "👩‍💻")
 
 user_state: dict = {}
 
@@ -98,17 +98,10 @@ def cancel_reminder(state):
     if state.get("reminder_task") and not state["reminder_task"].done():
         state["reminder_task"].cancel()
 
-# ─── COLORED KEYBOARDS ────────────────────────────────────────────────────────
-# Button colors in Telegram are determined by the FIRST emoji in button text:
-# 🟢 Green  = ✅ 🟢 💚
-# 🔴 Red    = ❌ 🔴 
-# 🟡 Yellow = ⭐ 🌟 ⚠️
-# 🔵 Blue   = 🔵 💙 📘
-# 🟣 Purple = 💜 🔮
-# ⚫ Dark   = 🖤 ⚫
+# ─── KEYBOARDS ────────────────────────────────────────────────────────────────
 
 def support_btn():
-    return InlineKeyboardButton("✉️ Contact Support 24/7 💬", url=SUPPORT, style="primary")
+    return InlineKeyboardButton("✉️ Contact Support 24/7", url=SUPPORT, style="primary")
 
 def register_keyboard():
     return InlineKeyboardMarkup([
@@ -152,9 +145,7 @@ def vip_keyboard():
     ])
 
 def support_keyboard():
-    return InlineKeyboardMarkup([
-        [InlineKeyboardButton("✉️ Contact Support 24/7 💬", url=SUPPORT, style="primary")]
-    ])
+    return InlineKeyboardMarkup([[support_btn()]])
 
 def recheck_keyboard():
     return InlineKeyboardMarkup([
@@ -186,6 +177,101 @@ async def send_reminder(chat_id, bot):
         )
     except Exception as e:
         print(f"Reminder error: {e}")
+
+# ─── START SEQUENCE (runs in background) ──────────────────────────────────────
+
+async def run_start_sequence(chat_id, bot, state):
+    try:
+        # 1) Sticker
+        await bot.send_sticker(
+            chat_id=chat_id,
+            sticker="CAACAgUAAxkBAAFL9cVqKCa70-hZ2BsucTxBmLtRI2PFMAACBxIAArIYAAFXuG3a4VpEuLw7BA"
+        )
+
+        # 2) Round video
+        await bot.send_video_note(
+            chat_id=chat_id,
+            video_note="DQACAgUAAxkBAAMbaidRKZuu4TnoWbcqd3A_KLQByFEAAs4cAAJfGjFXsw34l8lliF47BA"
+        )
+
+        # 3) Photo + buttons
+        await bot.send_photo(
+            chat_id=chat_id,
+            photo="AgACAgUAAxkBAAMZaidQ8AAB-XcWZ92dfh1Nyj12vp9tAAL9D2sb2mc5VTJ5ySC9Sop4AQADAgADeQADOwQ",
+            caption=(
+                f"<b>{E_TROPHY} You're Here Because You Want To Earn Money {E_MONEY}\n\n"
+                f"{E_HAND} Join My All Channels {E_CHART} Below & Recover Your Lifetime Losses {E_CHART}\n\n"
+                f"{E_FIRE} Start Earning Money Today {E_ROCKET}</b>"
+            ),
+            parse_mode=ParseMode.HTML,
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton("📈 FREE VIP GROUP", url="https://t.me/+s_guD0HJ0B9kYWM1", style="success")],
+                [InlineKeyboardButton("🎯 JOIN LOSS RECOVERY", url="https://t.me/+s_guD0HJ0B9kYWM1", style="danger")],
+                [InlineKeyboardButton("💬 CONTACT FOR HELP", url=SUPPORT, style="primary")],
+            ])
+        )
+
+        # 4) Wait 10 seconds
+        await asyncio.sleep(10)
+
+        # 5) Intro message
+        await bot.send_message(
+            chat_id=chat_id,
+            text=(
+                f"<b>Hello {E_TROPHY} Are You Ready To Earn Money With Trading 🕯️ Without Experience\n\n"
+                f"{E_CHART} I Helped 10,000+ New Members To Start EARNING {E_ROCKET}\n\n"
+                f"{E_WARN} I Shared The Result Of My Client Earning With Me {E_HAND}</b>"
+            ),
+            parse_mode=ParseMode.HTML
+        )
+
+        # 6) Media album
+        media = [
+            InputMediaVideo(media="BAACAgUAAxkBAAMtaidXNeAzsfiXzbzTipXYriM1QccAAr4fAALaZzlV3a9DaWKShwg7BA"),
+            InputMediaVideo(media="BAACAgUAAxkBAAMuaidXP2WTrAFQHjfNb2BEEyFIFNEAAr8fAALaZzlVMwnVMRZdSwQ7BA"),
+            InputMediaVideo(media="BAACAgUAAxkBAAM2aidbF2H6x4MPd8yJvVaav3-1Rx0AAk4TAAKE-wlUE1J9aR22UGs7BA"),
+            InputMediaPhoto(media="AgACAgUAAxkBAAMvaidZOKraitAwpTkzLOyuE8asGGQAAngOaxubnDlVOk0XXZUnDVsBAAMCAAN5AAM7BA"),
+            InputMediaPhoto(media="AgACAgUAAxkBAAMwaidZOD-Rpe2T-663b06c3fSpQ6QAAnkOaxubnDlVadz6EiT1F0QBAAMCAAN5AAM7BA"),
+            InputMediaPhoto(media="AgACAgUAAxkBAAMxaidZOCzrgkKfUKO130MGuwd8yi0AAnoOaxubnDlV4lsIOqHFWHUBAAMCAAN5AAM7BA"),
+            InputMediaPhoto(media="AgACAgUAAxkBAAMyaidZOOj3QW-KF9u4jm0Q6p__negAAnsOaxubnDlVQwg-WgLkC_kBAAMCAAN5AAM7BA"),
+            InputMediaPhoto(media="AgACAgUAAxkBAAMzaidZOJYjCJwT3jrBie1q3bftyPIAAnwOaxubnDlVm9pFyqPCuGgBAAMCAAN5AAM7BA"),
+            InputMediaPhoto(media="AgACAgUAAxkBAAM0aidZOAIic1LUisuabVtoG-zjErcAAn0OaxubnDlVLe9EI0F79TwBAAMCAAN5AAM7BA"),
+            InputMediaPhoto(media="AgACAgUAAxkBAAM1aidZONtvc134Omxzz_K_5ENML0EAAn4OaxubnDlVA7ThG7qOcGQBAAMCAAN3AAM7BA"),
+        ]
+        await bot.send_media_group(chat_id=chat_id, media=media)
+
+        # 7) Name/country question
+        await bot.send_message(
+            chat_id=chat_id,
+            text=(
+                f"<b>{E_PERSON} Bro, What Is Your Name And What's Your Country? {E_GLOBE}\n\n"
+                f"{E_NEW} It Will Help Us To Understand Each Other Better {E_TROPHY}</b>"
+            ),
+            parse_mode=ParseMode.HTML,
+            reply_markup=support_keyboard()
+        )
+
+        # 8) Wait 20 seconds
+        await asyncio.sleep(20)
+
+        # 9) Registration video
+        await bot.send_video(
+            chat_id=chat_id,
+            video="BAACAgUAAxkBAAOKaidpD_-7HAnZ9D2d-yGBmsLMW_QAAjcYAAI1GzlXipdJ8rzcwTs7BA",
+            caption=(
+                f"<b>{E_MONEY} Okay, So To Start Earning {E_MONEY} The First Step Is To Register "
+                f"A Trading Account {E_LINK}\n\n"
+                f"{E_HAND} Watch The Video & Just Click On Here {E_HAND}</b>"
+            ),
+            parse_mode=ParseMode.HTML,
+            reply_markup=register_keyboard()
+        )
+
+        # Start 10-min reminder
+        state["reminder_task"] = asyncio.create_task(send_reminder(chat_id, bot))
+
+    except Exception as e:
+        print(f"Start sequence error: {e}")
 
 # ─── ID VERIFICATION ──────────────────────────────────────────────────────────
 
@@ -286,72 +372,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     state = get_state(chat_id)
     cancel_reminder(state)
     state.update({"step": "start", "trader_id": None, "deposit": 0.0})
-
-    await update.message.reply_sticker(
-        sticker="CAACAgUAAxkBAAFL9cVqKCa70-hZ2BsucTxBmLtRI2PFMAACBxIAArIYAAFXuG3a4VpEuLw7BA"
-    )
-    await update.message.reply_video_note(
-        video_note="DQACAgUAAxkBAAMbaidRKZuu4TnoWbcqd3A_KLQByFEAAs4cAAJfGjFXsw34l8lliF47BA"
-    )
-    await update.message.reply_photo(
-        photo="AgACAgUAAxkBAAMZaidQ8AAB-XcWZ92dfh1Nyj12vp9tAAL9D2sb2mc5VTJ5ySC9Sop4AQADAgADeQADOwQ",
-        caption=(
-            f"<b>{E_TROPHY} You're Here Because You Want To Earn Money {E_MONEY}\n\n"
-            f"{E_HAND} Join My All Channels {E_CHART} Below & Recover Your Lifetime Losses {E_CHART}\n\n"
-            f"{E_FIRE} Start Earning Money Today {E_ROCKET}</b>"
-        ),
-        parse_mode=ParseMode.HTML,
-        reply_markup=InlineKeyboardMarkup([
-            [InlineKeyboardButton("📈 FREE VIP GROUP", url="https://t.me/+s_guD0HJ0B9kYWM1", style="success")],
-            [InlineKeyboardButton("🎯 JOIN LOSS RECOVERY", url="https://t.me/+s_guD0HJ0B9kYWM1", style="danger")],
-            [InlineKeyboardButton("💬 CONTACT FOR HELP", url=SUPPORT, style="primary")],
-        ])
-    )
-
-    await asyncio.sleep(10)
-
-    await update.message.reply_text(
-        f"<b>Hello {E_TROPHY} Are You Ready To Earn Money With Trading 🕯️ Without Experience\n\n"
-        f"{E_CHART} I Helped 10,000+ New Members To Start EARNING {E_ROCKET}\n\n"
-        f"{E_WARN} I Shared The Result Of My Client Earning With Me {E_HAND}</b>",
-        parse_mode=ParseMode.HTML
-    )
-
-    media = [
-        InputMediaVideo(media="BAACAgUAAxkBAAMtaidXNeAzsfiXzbzTipXYriM1QccAAr4fAALaZzlV3a9DaWKShwg7BA"),
-        InputMediaVideo(media="BAACAgUAAxkBAAMuaidXP2WTrAFQHjfNb2BEEyFIFNEAAr8fAALaZzlVMwnVMRZdSwQ7BA"),
-        InputMediaVideo(media="BAACAgUAAxkBAAM2aidbF2H6x4MPd8yJvVaav3-1Rx0AAk4TAAKE-wlUE1J9aR22UGs7BA"),
-        InputMediaPhoto(media="AgACAgUAAxkBAAMvaidZOKraitAwpTkzLOyuE8asGGQAAngOaxubnDlVOk0XXZUnDVsBAAMCAAN5AAM7BA"),
-        InputMediaPhoto(media="AgACAgUAAxkBAAMwaidZOD-Rpe2T-663b06c3fSpQ6QAAnkOaxubnDlVadz6EiT1F0QBAAMCAAN5AAM7BA"),
-        InputMediaPhoto(media="AgACAgUAAxkBAAMxaidZOCzrgkKfUKO130MGuwd8yi0AAnoOaxubnDlV4lsIOqHFWHUBAAMCAAN5AAM7BA"),
-        InputMediaPhoto(media="AgACAgUAAxkBAAMyaidZOOj3QW-KF9u4jm0Q6p__negAAnsOaxubnDlVQwg-WgLkC_kBAAMCAAN5AAM7BA"),
-        InputMediaPhoto(media="AgACAgUAAxkBAAMzaidZOJYjCJwT3jrBie1q3bftyPIAAnwOaxubnDlVm9pFyqPCuGgBAAMCAAN5AAM7BA"),
-        InputMediaPhoto(media="AgACAgUAAxkBAAM0aidZOAIic1LUisuabVtoG-zjErcAAn0OaxubnDlVLe9EI0F79TwBAAMCAAN5AAM7BA"),
-        InputMediaPhoto(media="AgACAgUAAxkBAAM1aidZONtvc134Omxzz_K_5ENML0EAAn4OaxubnDlVA7ThG7qOcGQBAAMCAAN3AAM7BA"),
-    ]
-    await context.bot.send_media_group(chat_id=chat_id, media=media)
-
-    await update.message.reply_text(
-        f"<b>{E_PERSON} Bro, What Is Your Name And What's Your Country? {E_GLOBE}\n\n"
-        f"{E_NEW} It Will Help Us To Understand Each Other Better {E_TROPHY}</b>",
-        parse_mode=ParseMode.HTML,
-        reply_markup=support_keyboard()
-    )
-
-    await asyncio.sleep(20)
-
-    await update.message.reply_video(
-        video="BAACAgUAAxkBAAOKaidpD_-7HAnZ9D2d-yGBmsLMW_QAAjcYAAI1GzlXipdJ8rzcwTs7BA",
-        caption=(
-            f"<b>{E_MONEY} Okay, So To Start Earning {E_MONEY} The First Step Is To Register "
-            f"A Trading Account {E_LINK}\n\n"
-            f"{E_HAND} Watch The Video & Just Click On Here {E_HAND}</b>"
-        ),
-        parse_mode=ParseMode.HTML,
-        reply_markup=register_keyboard()
-    )
-
-    state["reminder_task"] = asyncio.create_task(send_reminder(chat_id, context.bot))
+    # Run full sequence in background — no timeout issues
+    asyncio.create_task(run_start_sequence(chat_id, context.bot, state))
 
 
 async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
