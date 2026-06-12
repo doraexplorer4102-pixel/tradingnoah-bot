@@ -379,15 +379,20 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if query.data == "registered":
         cancel_reminder(state)
         state["step"] = "awaiting_id"
-        await query.message.reply_text(
-            f"<b>{E_PARTY} Congratulations! You're just one step away! {E_FIRE}\n\n"
-            f"━━━━━━━━━━━━━━━━━━━\n\n"
-            f"{E_EYES} Steps to find your Trader ID:\n\n"
-            f"1️⃣ Open your <b>Quotex account</b>\n"
-            f"2️⃣ Go to <b>My Account</b>\n"
-            f"3️⃣ You will see your <b>Trader ID</b> there\n"
-            f"4️⃣ Reply with that <b>8-digit code</b> {E_HAND}</b>",
-            parse_mode=ParseMode.HTML, reply_markup=support_keyboard()
+        await context.bot.send_photo(
+            chat_id=chat_id,
+            photo="AgACAgUAAxkBAAFMQkRqLDe4E5mM4qA8fzYNOfCLl_KYqAACTw9rG986YVXIOJi71DlRBwEAAwIAA3kAAzwE",
+            caption=(
+                f"<b>{E_PARTY} Congratulations! You're just one step away! {E_FIRE}\n\n"
+                f"━━━━━━━━━━━━━━━━━━━\n\n"
+                f"{E_EYES} Follow these steps to find your Trader ID:\n\n"
+                f"1️⃣ Open your <b>Quotex account</b>\n"
+                f"2️⃣ Go to <b>My Account</b>\n"
+                f"3️⃣ You will see your <b>Trader ID</b> there\n"
+                f"4️⃣ Reply with that <b>8-digit code</b> {E_HAND}</b>"
+            ),
+            parse_mode=ParseMode.HTML,
+            reply_markup=support_keyboard()
         )
 
     elif query.data == "try_again":
