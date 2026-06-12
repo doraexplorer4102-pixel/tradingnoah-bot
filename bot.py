@@ -271,16 +271,11 @@ async def verify_id_then_respond(uid, chat_id, bot):
         parse_mode=ParseMode.HTML
     )
 
-    # Check DB — wait up to 60 seconds for postback to arrive
+    # Check DB instantly first
     trader = db_get_trader(uid)
     if not trader:
-        # Update message to show we are still checking
-        await bot.edit_message_text(
-            chat_id=chat_id, message_id=msg.message_id,
-            text=f"<b>{E_EYES} Verifying ID <code>{uid}</code>...\n\n{E_CLOCK} Please wait a moment...</b>",
-            parse_mode=ParseMode.HTML
-        )
-        for i in range(4):  # 4 x 5s = 20 seconds
+        # Wait max 10 seconds for postback
+        for i in range(2):
             await asyncio.sleep(5)
             trader = db_get_trader(uid)
             if trader:
@@ -450,9 +445,9 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
         else:
             await query.message.reply_text(
-                f"<b>{E_WARN} Bro, your balance is still ZERO! {E_CROSS}\n\n"
-                f"ID: <code>{uid}</code> shows: <b>${dep:.2f}</b>\n\n"
-                f"{E_MONEY} Deposit <b>$20 or more</b> and click Re-Check! {E_HAND}</b>",
+                f"<b>{E_WARN} Bro, your balance shows <b>${dep:.2f}</b>! {E_CROSS}\n\n"
+                f"ID: <code>{uid}</code>\n\n"
+                f"{E_MONEY} Please deposit <b>$20 or more</b> and click Re-Check! {E_HAND}</b>",
                 parse_mode=ParseMode.HTML, reply_markup=recheck_keyboard()
             )
 
