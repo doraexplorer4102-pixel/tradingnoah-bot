@@ -15,7 +15,6 @@ from telegram.ext import (
 from telegram.constants import ParseMode
 import pg8000.native
 
-# ─── CONFIG ───────────────────────────────────────────────────────────────────
 TOKEN        = "8972809832:AAEyWhpky-MUIY9Q7pm1pOTQzKgYbk1gRcw"
 VIP_LINK     = "https://t.me/+H3isrme8c3BiNDg1"
 AFFILIATE    = "https://broker-qx.pro/sign-up/?lid=1504736"
@@ -27,7 +26,6 @@ VIDEO_REMINDER = "BAACAgUAAxkBAAFMQIxqLCy8iLgzzjwMiMFm4ahJi-N-iwACQCQAAmS9YFWS4s
 VIDEO_DEPOSIT  = "BQACAgUAAxkBAAFMQI5qLCzLxgL0oM6v_DRoWsq0R6ecMAACQiQAAmS9YFXmR4aJiqZyKjwE"
 BONUS_PHOTO    = "AgACAgUAAxkBAAMZaidQ8AAB-XcWZ92dfh1Nyj12vp9tAAL9D2sb2mc5VTJ5ySC9Sop4AQADAgADeQADOwQ"
 
-# ─── PREMIUM EMOJIS ───────────────────────────────────────────────────────────
 def pe(eid, fb): return f'<tg-emoji emoji-id="{eid}">{fb}</tg-emoji>'
 
 E_FIRE    = pe("5424972470023104089", "🔥")
@@ -42,7 +40,6 @@ E_GIFT    = pe("5203996991054432397", "🎁")
 E_CHECK   = pe("5206607081334906820", "✅")
 E_CROSS   = pe("5210952531676504517", "❌")
 E_WARN    = pe("5420323339723881652", "⚠️")
-E_SHIELD  = pe("5197288647275071607", "🛡")
 E_KEY     = pe("5307843983102204243", "🔑")
 E_LINK    = pe("5271604874419647061", "🔗")
 E_PHONE   = pe("5253742260054409879", "✉️")
@@ -50,7 +47,6 @@ E_CLOCK   = pe("5431807687136395567", "⏰")
 E_PARTY   = pe("5461151367559141950", "🎉")
 E_HAND    = pe("5305522282695768654", "👇")
 E_EYES    = pe("5210956306952758910", "👀")
-E_TARGET  = pe("6185808707985608949", "🎯")
 E_THUMBS  = pe("5337080053119336309", "👍")
 E_CHAT    = pe("5443038326535759644", "💬")
 E_GLOBE   = pe("5224450179368767019", "🌍")
@@ -58,8 +54,6 @@ E_NEW     = pe("5382357040008021292", "🆕")
 E_PERSON  = pe("5217797330861826981", "👩‍💻")
 
 user_state: dict = {}
-
-# ─── DATABASE ─────────────────────────────────────────────────────────────────
 
 def get_db():
     ctx = ssl.create_default_context()
@@ -84,10 +78,8 @@ def db_get_trader(uid):
             return {"uid": rows[0][0], "deposit": float(rows[0][1] or 0)}
         return None
     except Exception as e:
-        print(f"DB get error: {e}")
+        print(f"DB error: {e}")
         return None
-
-# ─── STATE ────────────────────────────────────────────────────────────────────
 
 def get_state(chat_id):
     if chat_id not in user_state:
@@ -98,8 +90,6 @@ def cancel_reminder(state):
     if state.get("reminder_task") and not state["reminder_task"].done():
         state["reminder_task"].cancel()
 
-# ─── KEYBOARDS ────────────────────────────────────────────────────────────────
-
 def support_btn():
     return InlineKeyboardButton("✉️ Contact Support 24/7", url=SUPPORT, style="primary")
 
@@ -107,41 +97,41 @@ def register_keyboard():
     return InlineKeyboardMarkup([
         [InlineKeyboardButton("🔗 REGISTER FREE NOW ⭐", url=AFFILIATE, style="success")],
         [InlineKeyboardButton("🔑 I HAVE REGISTERED ✨", callback_data="registered", style="primary")],
-        [InlineKeyboardButton("✉️ CONTACT SUPPORT 💬", url=SUPPORT, style="primary")],
+        [InlineKeyboardButton("✉️ CONTACT SUPPORT", url=SUPPORT, style="primary")],
     ])
 
 def deposit_keyboard():
     return InlineKeyboardMarkup([
-        [InlineKeyboardButton("🎁 Claim 50% Bonus NOW 🎊", callback_data="claim_bonus", style="success")],
+        [InlineKeyboardButton("🎁 Claim 50% Bonus NOW", callback_data="claim_bonus", style="success")],
         [InlineKeyboardButton("🔄 I Have Deposited (Re-Check)", callback_data="deposited", style="danger")],
-        [InlineKeyboardButton("✉️ Contact Support 💬", url=SUPPORT, style="primary")],
+        [InlineKeyboardButton("✉️ Contact Support", url=SUPPORT, style="primary")],
     ])
 
 def reject_keyboard():
     return InlineKeyboardMarkup([
         [InlineKeyboardButton("🔗 Register With Our Link", url=AFFILIATE, style="success")],
         [InlineKeyboardButton("🔄 Try Again With Correct ID", callback_data="try_again", style="primary")],
-        [InlineKeyboardButton("✉️ Contact Support 💬", url=SUPPORT, style="primary")],
+        [InlineKeyboardButton("✉️ Contact Support", url=SUPPORT, style="primary")],
     ])
 
 def reminder_keyboard():
     return InlineKeyboardMarkup([
         [InlineKeyboardButton("🚀 Create Free Account Now", url=AFFILIATE, style="success")],
         [InlineKeyboardButton("🔥 Click Here To Join VIP", url=AFFILIATE, style="success")],
-        [InlineKeyboardButton("✉️ Contact Support 💬", url=SUPPORT, style="primary")],
+        [InlineKeyboardButton("✉️ Contact Support", url=SUPPORT, style="primary")],
     ])
 
 def bonus_keyboard():
     return InlineKeyboardMarkup([
         [InlineKeyboardButton("💰 Deposit Now & Get 50% Bonus", url=AFFILIATE, style="success")],
         [InlineKeyboardButton("✅ I Have Deposited", callback_data="deposited", style="danger")],
-        [InlineKeyboardButton("✉️ Contact Support 💬", url=SUPPORT, style="primary")],
+        [InlineKeyboardButton("✉️ Contact Support", url=SUPPORT, style="primary")],
     ])
 
 def vip_keyboard():
     return InlineKeyboardMarkup([
         [InlineKeyboardButton("👑 JOIN VIP SIGNALS GROUP 🏆", url=VIP_LINK, style="success")],
-        [InlineKeyboardButton("✉️ Contact Support 💬", url=SUPPORT, style="primary")],
+        [InlineKeyboardButton("✉️ Contact Support", url=SUPPORT, style="primary")],
     ])
 
 def support_keyboard():
@@ -151,10 +141,8 @@ def recheck_keyboard():
     return InlineKeyboardMarkup([
         [InlineKeyboardButton("💰 Deposit Now", url=AFFILIATE, style="success")],
         [InlineKeyboardButton("🔄 I Have Deposited (Re-Check)", callback_data="deposited", style="danger")],
-        [InlineKeyboardButton("✉️ Contact Support 💬", url=SUPPORT, style="primary")],
+        [InlineKeyboardButton("✉️ Contact Support", url=SUPPORT, style="primary")],
     ])
-
-# ─── REMINDER ─────────────────────────────────────────────────────────────────
 
 async def send_reminder(chat_id, bot):
     await asyncio.sleep(600)
@@ -166,11 +154,11 @@ async def send_reminder(chat_id, bot):
             chat_id=chat_id,
             video=VIDEO_REMINDER,
             caption=(
-                f"<b>{E_EYES} Bro, it looks like you still haven't created your account! {E_WARN}\n\n"
-                f"{E_FIRE} See the LIVE benefits and results of my VIP members who are making money DAILY! {E_CHART}\n\n"
-                f"{E_MONEY} My members are doubling their accounts RIGHT NOW! {E_ROCKET}\n\n"
-                f"{E_HAND} Create your account NOW using this link and send me your Trader ID!\n\n"
-                f"{E_CLOCK} Don't miss out — this opportunity won't last forever! {E_WARN}</b>"
+                f"<b>{E_EYES} Bro, you still haven't created your account! {E_WARN}\n\n"
+                f"{E_FIRE} See LIVE results of my VIP members making money DAILY! {E_CHART}\n\n"
+                f"{E_MONEY} My members are doubling accounts RIGHT NOW! {E_ROCKET}\n\n"
+                f"{E_HAND} Create your account NOW and send me your Trader ID!\n\n"
+                f"{E_CLOCK} Don't miss out! {E_WARN}</b>"
             ),
             parse_mode=ParseMode.HTML,
             reply_markup=reminder_keyboard()
@@ -178,30 +166,27 @@ async def send_reminder(chat_id, bot):
     except Exception as e:
         print(f"Reminder error: {e}")
 
-# ─── START SEQUENCE (runs in background) ──────────────────────────────────────
-
 async def run_start_sequence(chat_id, bot, state):
     try:
-        # 1) Sticker
+        print(f"START SEQ step 1: sticker for {chat_id}")
         await bot.send_sticker(
             chat_id=chat_id,
             sticker="CAACAgUAAxkBAAFL9cVqKCa70-hZ2BsucTxBmLtRI2PFMAACBxIAArIYAAFXuG3a4VpEuLw7BA"
         )
 
-        # 2) Round video
+        print(f"START SEQ step 2: video note")
         await bot.send_video_note(
             chat_id=chat_id,
             video_note="DQACAgUAAxkBAAMbaidRKZuu4TnoWbcqd3A_KLQByFEAAs4cAAJfGjFXsw34l8lliF47BA"
         )
 
-        print("Step 3: sending photo")  # DEBUG
-        # 3) Photo + buttons
+        print(f"START SEQ step 3: photo")
         await bot.send_photo(
             chat_id=chat_id,
             photo="AgACAgUAAxkBAAMZaidQ8AAB-XcWZ92dfh1Nyj12vp9tAAL9D2sb2mc5VTJ5ySC9Sop4AQADAgADeQADOwQ",
             caption=(
                 f"<b>{E_TROPHY} You're Here Because You Want To Earn Money {E_MONEY}\n\n"
-                f"{E_HAND} Join My All Channels {E_CHART} Below & Recover Your Lifetime Losses {E_CHART}\n\n"
+                f"{E_HAND} Join My All Channels {E_CHART} Below & Recover Your Lifetime Losses\n\n"
                 f"{E_FIRE} Start Earning Money Today {E_ROCKET}</b>"
             ),
             parse_mode=ParseMode.HTML,
@@ -212,24 +197,21 @@ async def run_start_sequence(chat_id, bot, state):
             ])
         )
 
-        print("Step 4: waiting 10s")  # DEBUG
-        # 4) Wait 10 seconds
+        print(f"START SEQ step 4: sleep 10")
         await asyncio.sleep(10)
 
-        print("Step 5: intro message")  # DEBUG
-        # 5) Intro message
+        print(f"START SEQ step 5: intro text")
         await bot.send_message(
             chat_id=chat_id,
             text=(
-                f"<b>Hello {E_TROPHY} Are You Ready To Earn Money With Trading 🕯️ Without Experience\n\n"
+                f"<b>Hello {E_TROPHY} Are You Ready To Earn Money With Trading Without Experience\n\n"
                 f"{E_CHART} I Helped 10,000+ New Members To Start EARNING {E_ROCKET}\n\n"
                 f"{E_WARN} I Shared The Result Of My Client Earning With Me {E_HAND}</b>"
             ),
             parse_mode=ParseMode.HTML
         )
 
-        print("Step 6: media album")  # DEBUG
-        # 6) Media album
+        print(f"START SEQ step 6: media album")
         media = [
             InputMediaVideo(media="BAACAgUAAxkBAAMtaidXNeAzsfiXzbzTipXYriM1QccAAr4fAALaZzlV3a9DaWKShwg7BA"),
             InputMediaVideo(media="BAACAgUAAxkBAAMuaidXP2WTrAFQHjfNb2BEEyFIFNEAAr8fAALaZzlVMwnVMRZdSwQ7BA"),
@@ -244,7 +226,7 @@ async def run_start_sequence(chat_id, bot, state):
         ]
         await bot.send_media_group(chat_id=chat_id, media=media)
 
-        # 7) Name/country question
+        print(f"START SEQ step 7: name question")
         await bot.send_message(
             chat_id=chat_id,
             text=(
@@ -255,11 +237,10 @@ async def run_start_sequence(chat_id, bot, state):
             reply_markup=support_keyboard()
         )
 
-        # 8) Wait 20 seconds
+        print(f"START SEQ step 8: sleep 20")
         await asyncio.sleep(20)
 
-        print("Step 9: registration video")  # DEBUG
-        # 9) Registration video
+        print(f"START SEQ step 9: registration video")
         await bot.send_video(
             chat_id=chat_id,
             video="BAACAgUAAxkBAAOKaidpD_-7HAnZ9D2d-yGBmsLMW_QAAjcYAAI1GzlXipdJ8rzcwTs7BA",
@@ -272,13 +253,13 @@ async def run_start_sequence(chat_id, bot, state):
             reply_markup=register_keyboard()
         )
 
-        # Start 10-min reminder
+        print(f"START SEQ complete!")
         state["reminder_task"] = asyncio.create_task(send_reminder(chat_id, bot))
 
     except Exception as e:
-        print(f"Start sequence error: {e}")
-
-# ─── ID VERIFICATION ──────────────────────────────────────────────────────────
+        import traceback
+        print(f"START SEQ ERROR at some step: {e}")
+        traceback.print_exc()
 
 async def verify_id_then_respond(uid, chat_id, bot):
     state = get_state(chat_id)
@@ -301,16 +282,13 @@ async def verify_id_then_respond(uid, chat_id, bot):
     if not trader:
         state["step"] = "awaiting_id"
         await bot.edit_message_text(
-            chat_id=chat_id,
-            message_id=msg.message_id,
+            chat_id=chat_id, message_id=msg.message_id,
             text=(
                 f"<b>{E_CROSS} Bro, this account is NOT registered through my link! {E_WARN}\n\n"
                 f"Please re-check and send the correct Trader ID. {E_EYES}\n\n"
-                f"{E_CHAT} If you are facing any problem, please contact us anytime.\n"
-                f"{E_CLOCK} Our team is available 24/7!</b>"
+                f"{E_CHAT} Contact us anytime — our team is available 24/7! {E_CLOCK}</b>"
             ),
-            parse_mode=ParseMode.HTML,
-            reply_markup=reject_keyboard()
+            parse_mode=ParseMode.HTML, reply_markup=reject_keyboard()
         )
         state["reminder_task"] = asyncio.create_task(send_reminder(chat_id, bot))
         return
@@ -323,8 +301,7 @@ async def verify_id_then_respond(uid, chat_id, bot):
         state["step"] = "done"
         cancel_reminder(state)
         await bot.edit_message_text(
-            chat_id=chat_id,
-            message_id=msg.message_id,
+            chat_id=chat_id, message_id=msg.message_id,
             text=f"<b>{E_CHECK} ID <code>{uid}</code> verified! {E_PARTY} Deposit confirmed! {E_ROCKET}</b>",
             parse_mode=ParseMode.HTML
         )
@@ -341,45 +318,36 @@ async def verify_id_then_respond(uid, chat_id, bot):
                 f"{E_STAR} All Trades 100% NON-MTG\n\n"
                 f"{E_THUMBS} Welcome to the winning team! {E_TROPHY}</b>"
             ),
-            parse_mode=ParseMode.HTML,
-            reply_markup=vip_keyboard()
+            parse_mode=ParseMode.HTML, reply_markup=vip_keyboard()
         )
     else:
         state["step"] = "awaiting_deposit"
         await bot.edit_message_text(
-            chat_id=chat_id,
-            message_id=msg.message_id,
+            chat_id=chat_id, message_id=msg.message_id,
             text=f"<b>{E_CHECK} ID <code>{uid}</code> linked! {E_EYES} Checking deposit...</b>",
             parse_mode=ParseMode.HTML
         )
         await bot.send_video(
-            chat_id=chat_id,
-            video=VIDEO_DEPOSIT,
+            chat_id=chat_id, video=VIDEO_DEPOSIT,
             caption=(
                 f"<b>{E_WARN} ACCOUNT LINKED — $0.00 BALANCE {E_WARN}\n\n"
-                f"👆 Watch the video on how to deposit, or contact support for help.\n\n"
-                f"{E_EYES} I found your Quotex ID <code>{uid}</code>, but your balance is still ZERO!\n\n"
+                f"👆 Watch the video on how to deposit, or contact support.\n\n"
+                f"{E_EYES} Found Quotex ID <code>{uid}</code> but balance is ZERO!\n\n"
                 f"━━━━━━━━━━━━━━━━━━━\n\n"
                 f"{E_GIFT} SPECIAL BONUS UNLOCKED! {E_PARTY}\n\n"
-                f"Use this 50% bonus code:\n"
                 f"{E_FIRE} Promo Code: <code>NOAH50</code> {E_FIRE}\n\n"
-                f"{E_WARN} This code automatically EXPIRES within 15 minutes!\n\n"
-                f"{E_MONEY} Deposit the required amount and click Re-Check {E_CHECK}</b>"
+                f"{E_WARN} Expires in 15 minutes!\n\n"
+                f"{E_MONEY} Deposit & click Re-Check {E_CHECK}</b>"
             ),
-            parse_mode=ParseMode.HTML,
-            reply_markup=deposit_keyboard()
+            parse_mode=ParseMode.HTML, reply_markup=deposit_keyboard()
         )
-
-# ─── HANDLERS ─────────────────────────────────────────────────────────────────
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
     state = get_state(chat_id)
     cancel_reminder(state)
     state.update({"step": "start", "trader_id": None, "deposit": 0.0})
-    # Run full sequence in background — no timeout issues
     asyncio.create_task(run_start_sequence(chat_id, context.bot, state))
-
 
 async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
@@ -393,23 +361,21 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.message.reply_text(
             f"<b>{E_PARTY} Congratulations! You're just one step away! {E_FIRE}\n\n"
             f"━━━━━━━━━━━━━━━━━━━\n\n"
-            f"{E_EYES} Please follow these steps to find your Trader ID:\n\n"
+            f"{E_EYES} Steps to find your Trader ID:\n\n"
             f"1️⃣ Open your <b>Quotex account</b>\n"
             f"2️⃣ Go to <b>My Account</b>\n"
             f"3️⃣ You will see your <b>Trader ID</b> there\n"
             f"4️⃣ Reply with that <b>8-digit code</b> {E_HAND}</b>",
-            parse_mode=ParseMode.HTML,
-            reply_markup=support_keyboard()
+            parse_mode=ParseMode.HTML, reply_markup=support_keyboard()
         )
 
     elif query.data == "try_again":
         state["step"] = "awaiting_id"
         await query.message.reply_text(
-            f"<b>🔄 Please send your correct Trader ID {E_EYES}\n\n"
-            f"👉 Find it in your Quotex dashboard → <b>My Account</b>\n\n"
-            f"Just type and send your ID number {E_HAND}</b>",
-            parse_mode=ParseMode.HTML,
-            reply_markup=support_keyboard()
+            f"<b>🔄 Send your correct Trader ID {E_EYES}\n\n"
+            f"👉 Quotex dashboard → <b>My Account</b>\n\n"
+            f"Type and send your ID number {E_HAND}</b>",
+            parse_mode=ParseMode.HTML, reply_markup=support_keyboard()
         )
 
     elif query.data == "claim_bonus":
@@ -418,13 +384,11 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             caption=(
                 f"<b>{E_GIFT} 50% Deposit Bonus Code FREE!! {E_PARTY}\n\n"
                 f"{E_FIRE} Code: <code>NOAH50</code> {E_FIRE}\n\n"
-                f"Simply enter the promo code <b>NOAH50</b> when making your deposit.\n\n"
-                f"{E_WARN} Promo codes can only be used by accounts created using our link.\n\n"
-                f"{E_CHECK} After depositing, please send me your Trader ID again\n"
-                f"or click 'I Have Deposited' {E_HAND}</b>"
+                f"Enter promo code <b>NOAH50</b> when depositing.\n\n"
+                f"{E_WARN} Only for accounts created using our link.\n\n"
+                f"{E_CHECK} After depositing, send your Trader ID or click 'I Have Deposited' {E_HAND}</b>"
             ),
-            parse_mode=ParseMode.HTML,
-            reply_markup=bonus_keyboard()
+            parse_mode=ParseMode.HTML, reply_markup=bonus_keyboard()
         )
 
     elif query.data == "deposited":
@@ -432,14 +396,12 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if not uid:
             await query.message.reply_text(
                 f"<b>{E_WARN} Please send your Trader ID first! {E_HAND}</b>",
-                parse_mode=ParseMode.HTML,
-                reply_markup=support_keyboard()
+                parse_mode=ParseMode.HTML, reply_markup=support_keyboard()
             )
             return
         trader = db_get_trader(uid)
         dep = trader["deposit"] if trader else 0.0
         state["deposit"] = dep
-
         if dep >= MIN_DEPOSIT:
             state["step"] = "done"
             cancel_reminder(state)
@@ -447,45 +409,36 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 f"<b>{E_PARTY} Deposit Confirmed! WELCOME TO VIP! {E_CROWN}\n\n"
                 f"━━━━━━━━━━━━━━━━━━━\n\n"
                 f"{E_TROPHY} You are now a verified VIP member!\n\n"
-                f"{E_FIRE} Join our Exclusive VIP Signals Group NOW:\n\n"
+                f"{E_FIRE} Join Exclusive VIP Signals Group NOW:\n\n"
                 f"{E_DIAMOND} {VIP_LINK} {E_DIAMOND}\n\n"
                 f"{E_THUMBS} Welcome to the winning team! {E_TROPHY}</b>",
-                parse_mode=ParseMode.HTML,
-                reply_markup=vip_keyboard()
+                parse_mode=ParseMode.HTML, reply_markup=vip_keyboard()
             )
         else:
             await query.message.reply_text(
                 f"<b>{E_WARN} Bro, your balance is still ZERO! {E_CROSS}\n\n"
-                f"Account (ID: <code>{uid}</code>) shows: <b>${dep:.2f}</b>\n\n"
-                f"{E_MONEY} Please deposit <b>$20 or more</b> and click Re-Check! {E_HAND}</b>",
-                parse_mode=ParseMode.HTML,
-                reply_markup=recheck_keyboard()
+                f"ID: <code>{uid}</code> shows: <b>${dep:.2f}</b>\n\n"
+                f"{E_MONEY} Deposit <b>$20 or more</b> and click Re-Check! {E_HAND}</b>",
+                parse_mode=ParseMode.HTML, reply_markup=recheck_keyboard()
             )
-
 
 async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
     state = get_state(chat_id)
     text = update.message.text.strip()
-
     if state["step"] == "awaiting_id":
         if not text.isdigit():
             await update.message.reply_text(
                 f"<b>{E_WARN} Please send only numbers (e.g. <code>89057949</code>) {E_HAND}</b>",
-                parse_mode=ParseMode.HTML,
-                reply_markup=support_keyboard()
+                parse_mode=ParseMode.HTML, reply_markup=support_keyboard()
             )
             return
         state["step"] = "checking"
         asyncio.create_task(verify_id_then_respond(text, chat_id, context.bot))
-
     elif state["step"] == "awaiting_deposit":
         if text.isdigit():
             state["step"] = "checking"
             asyncio.create_task(verify_id_then_respond(text, chat_id, context.bot))
-
-
-# ─── MAIN ─────────────────────────────────────────────────────────────────────
 
 tg_app = ApplicationBuilder().token(TOKEN).build()
 tg_app.add_handler(CommandHandler("start", start))
