@@ -15,7 +15,7 @@ from telegram.ext import (
 from telegram.constants import ParseMode
 import pg8000.native
 
-TOKEN        = "8972809832:AAEyWhpky-MUIY9Q7pm1pOTQzKgYbk1gRcw"
+TOKEN        = "8972809832:AAH2MiTUvrv9dEE9q0O1fvXMeasgi3k4E7c"
 VIP_LINK     = "https://t.me/+H3isrme8c3BiNDg1"
 AFFILIATE    = "https://broker-qx.pro/sign-up/?lid=1504736"
 SUPPORT      = "https://t.me/TRADELIKENOAH"
