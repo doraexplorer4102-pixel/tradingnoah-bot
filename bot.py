@@ -21,6 +21,7 @@ AFFILIATE    = "https://broker-qx.pro/sign-up/?lid=1504736"
 SUPPORT      = "https://t.me/TRADELIKENOAH"
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:DEfYBWltENxssYQNpworlKPeKVSKUuyQ@acela.proxy.rlwy.net:19828/railway")
 MIN_DEPOSIT  = 20
+OWNER_ID     = int(os.getenv("OWNER_ID", "8837911637"))
 
 VIDEO_REMINDER = "BAACAgUAAxkBAAFMQIxqLCy8iLgzzjwMiMFm4ahJi-N-iwACQCQAAmS9YFWS4sMNJoZYFjwE"
 VIDEO_DEPOSIT  = "BQACAgUAAxkBAAFMQI5qLCzLxgL0oM6v_DRoWsq0R6ecMAACQiQAAmS9YFXmR4aJiqZyKjwE"
@@ -469,6 +470,13 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 parse_mode=ParseMode.HTML, reply_markup=recheck_keyboard()
             )
 
+async def photo_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Capture photo file IDs sent directly to bot"""
+    if update.message.photo:
+        fid = update.message.photo[-1].file_id
+        print(f"PHOTO FILE ID: {fid}")
+        await update.message.reply_text(f"FILE ID:\n{fid}")
+
 async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
     state = get_state(chat_id)
@@ -567,6 +575,7 @@ async def main():
     tg_app = ApplicationBuilder().token(TOKEN).build()
     tg_app.add_handler(CommandHandler("start", start))
     tg_app.add_handler(CallbackQueryHandler(button_handler))
+    tg_app.add_handler(MessageHandler(filters.PHOTO, photo_handler))
     tg_app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, message_handler))
 
     await tg_app.initialize()
