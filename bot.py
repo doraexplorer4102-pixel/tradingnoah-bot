@@ -360,8 +360,8 @@ async def verify_id_then_respond(uid, chat_id, bot):
             text=f"<b>{E_CHECK} ID <code>{uid}</code> linked! {E_EYES} Checking deposit...</b>",
             parse_mode=ParseMode.HTML
         )
-        await bot.send_video(
-            chat_id=chat_id, video=VIDEO_DEPOSIT,
+        await bot.send_document(
+            chat_id=chat_id, document=VIDEO_DEPOSIT,
             caption=(
                 f"<b>{E_WARN} ACCOUNT LINKED — $0.00 BALANCE {E_WARN}\n\n"
                 f"👆 Watch the video on how to deposit, or contact support.\n\n"
