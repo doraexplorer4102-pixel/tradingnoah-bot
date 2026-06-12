@@ -25,7 +25,7 @@ OWNER_ID     = int(os.getenv("OWNER_ID", "8837911637"))
 
 VIDEO_REMINDER = "BAACAgUAAxkBAAFMQIxqLCy8iLgzzjwMiMFm4ahJi-N-iwACQCQAAmS9YFWS4sMNJoZYFjwE"
 VIDEO_DEPOSIT  = "BQACAgUAAxkBAAFMQI5qLCzLxgL0oM6v_DRoWsq0R6ecMAACQiQAAmS9YFXmR4aJiqZyKjwE"
-BONUS_PHOTO    = "AgACAgUAAxkBAAFMQkRqLDe4E5mM4qA8fzYNOfCLl_KYqAACTw9rG986YVXIOJi71DlRBwEAAwIAA3kAAzwE"
+BONUS_PHOTO    = "AgACAgUAAxkBAAIIE2osaUQb9q2xShFHMQQXqQOhpy6IAAKaE2sbeuFgVY1Aj7qvPgy_AQADAgADeQADPAQ"
 
 def pe(eid, fb): return f'<tg-emoji emoji-id="{eid}">{fb}</tg-emoji>'
 
@@ -395,9 +395,10 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if query.data == "registered":
         cancel_reminder(state)
         state["step"] = "awaiting_id"
-        await context.bot.send_message(
+        await context.bot.send_photo(
             chat_id=chat_id,
-            text=(
+            photo="AgACAgUAAxkBAAIIEmosaUSmxDt3tDTubZdjoVbnKAABagACKg9rG26QYFXDW2olgCUHtwEAAwIAA3kAAzwE",
+            caption=(
                 f"<b>{E_PARTY} Congratulations! You're just one step away! {E_FIRE}\n\n"
                 f"━━━━━━━━━━━━━━━━━━━\n\n"
                 f"{E_EYES} Follow these steps to find your Trader ID:\n\n"
@@ -412,9 +413,10 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     elif query.data == "try_again":
         state["step"] = "awaiting_id"
-        await context.bot.send_message(
+        await context.bot.send_photo(
             chat_id=chat_id,
-            text=(
+            photo="AgACAgUAAxkBAAIIEmosaUSmxDt3tDTubZdjoVbnKAABagACKg9rG26QYFXDW2olgCUHtwEAAwIAA3kAAzwE",
+            caption=(
                 f"<b>🔄 Please send your correct Trader ID {E_EYES}\n\n"
                 f"━━━━━━━━━━━━━━━━━━━\n\n"
                 f"{E_EYES} Follow these steps to find your Trader ID:\n\n"
@@ -427,9 +429,10 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
     elif query.data == "claim_bonus":
-        await context.bot.send_message(
+        await context.bot.send_photo(
             chat_id=chat_id,
-            text=(
+            photo=BONUS_PHOTO,
+            caption=(
                 f"<b>{E_GIFT} 50% Deposit Bonus Code FREE!! {E_PARTY}\n\n"
                 f"{E_FIRE} Code: <code>NOAH50</code> {E_FIRE}\n\n"
                 f"Enter promo code <b>NOAH50</b> when depositing.\n\n"
