@@ -15,7 +15,7 @@ from telegram.ext import (
 from telegram.constants import ParseMode
 import pg8000.native
 
-TOKEN        = "8972809832:AAH2MiTUvrv9dEE9q0O1fvXMeasgi3k4E7c"
+TOKEN        = "8972809832:AAHKRaXFTjyVvCSgQP7Rfcrk97vRXL2nO90"
 VIP_LINK     = "https://t.me/+H3isrme8c3BiNDg1"
 AFFILIATE    = "https://broker-qx.pro/sign-up/?lid=1504736"
 SUPPORT      = "https://t.me/TRADELIKENOAH"
@@ -357,23 +357,26 @@ async def verify_id_then_respond(uid, chat_id, bot):
             return
         await bot.edit_message_text(
             chat_id=chat_id, message_id=msg.message_id,
-            text=f"<b>{E_CHECK} ID <code>{uid}</code> linked! {E_EYES} Checking deposit...</b>",
-            parse_mode=ParseMode.HTML
-        )
-        await bot.send_document(
-            chat_id=chat_id, document=VIDEO_DEPOSIT,
-            caption=(
-                f"<b>{E_WARN} ACCOUNT LINKED — $0.00 BALANCE {E_WARN}\n\n"
-                f"👆 Watch the video on how to deposit, or contact support.\n\n"
-                f"{E_EYES} Found Quotex ID <code>{uid}</code> but balance is ZERO!\n\n"
+            text=(
+                f"<b>{E_CHECK} ID <code>{uid}</code> verified! {E_WARN}\n\n"
+                f"ACCOUNT LINKED — $0.00 BALANCE\n\n"
+                f"{E_EYES} Found your Quotex ID but balance is ZERO!\n\n"
                 f"━━━━━━━━━━━━━━━━━━━\n\n"
                 f"{E_GIFT} SPECIAL BONUS UNLOCKED! {E_PARTY}\n\n"
                 f"{E_FIRE} Promo Code: <code>NOAH50</code> {E_FIRE}\n\n"
                 f"{E_WARN} Expires in 15 minutes!\n\n"
-                f"{E_MONEY} Deposit & click Re-Check {E_CHECK}</b>"
+                f"{E_MONEY} Deposit minimum $20 & click Re-Check {E_CHECK}</b>"
             ),
             parse_mode=ParseMode.HTML, reply_markup=deposit_keyboard()
         )
+        try:
+            await bot.send_document(
+                chat_id=chat_id, document=VIDEO_DEPOSIT,
+                caption=f"<b>👆 Watch this video to learn how to deposit!</b>",
+                parse_mode=ParseMode.HTML
+            )
+        except Exception as e:
+            print(f"Video send error: {e}")
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
