@@ -15,7 +15,7 @@ from telegram.ext import (
 from telegram.constants import ParseMode
 import pg8000.native
 
-TOKEN        = "8972809832:AAHKRaXFTjyVvCSgQP7Rfcrk97vRXL2nO90"
+TOKEN        = "8972809832:AAH2MiTUvrv9dEE9q0O1fvXMeasgi3k4E7c"
 VIP_LINK     = "https://t.me/+H3isrme8c3BiNDg1"
 AFFILIATE    = "https://broker-qx.pro/sign-up/?lid=1504736"
 SUPPORT      = "https://t.me/TRADELIKENOAH"
@@ -557,21 +557,45 @@ async def run_web_server():
     await site.start()
     print(f"✅ Web server running on port {port}")
 
+async def handle_telegram(request):
+    from aiohttp import web
+    data = await request.json()
+    update = Update.de_json(data, tg_app.bot)
+    await tg_app.process_update(update)
+    return web.Response(text="OK")
+
 async def main():
     global tg_app
     tg_app = ApplicationBuilder().token(TOKEN).build()
     tg_app.add_handler(CommandHandler("start", start))
     tg_app.add_handler(CallbackQueryHandler(button_handler))
     tg_app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, message_handler))
-    
-    await run_web_server()
-    
+
+    await tg_app.initialize()
+    await tg_app.start()
+
+    # Set webhook
+    webhook_url = f"https://worker-production-b340.up.railway.app/telegram/{TOKEN}"
+    await tg_app.bot.set_webhook(webhook_url, drop_pending_updates=True)
+    print(f"✅ Webhook set: {webhook_url}")
+
+    # Start web server
+    from aiohttp import web
+    app = web.Application()
+    app.router.add_post(f"/telegram/{TOKEN}", handle_telegram)
+    app.router.add_get("/postback", handle_postback)
+    app.router.add_get("/addid", handle_addid)
+    app.router.add_get("/", lambda r: web.Response(text="Trading Noah Bot Running ✅"))
+
+    runner = web.AppRunner(app)
+    await runner.setup()
+    port = int(os.getenv("PORT", 8080))
+    site = web.TCPSite(runner, "0.0.0.0", port)
+    await site.start()
+    print(f"✅ Web server running on port {port}")
     print("✅ Trading Noah Bot Running...")
-    async with tg_app:
-        await tg_app.initialize()
-        await tg_app.start()
-        await tg_app.updater.start_polling(drop_pending_updates=True)
-        await asyncio.Event().wait()
+
+    await asyncio.Event().wait()
 
 if __name__ == "__main__":
     asyncio.run(main())
