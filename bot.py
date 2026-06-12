@@ -27,9 +27,8 @@ VIDEO_REMINDER = "BAACAgUAAxkBAAFMQIxqLCy8iLgzzjwMiMFm4ahJi-N-iwACQCQAAmS9YFWS4s
 VIDEO_DEPOSIT  = "BQACAgUAAxkBAAFMQI5qLCzLxgL0oM6v_DRoWsq0R6ecMAACQiQAAmS9YFXmR4aJiqZyKjwE"
 BONUS_PHOTO    = "AgACAgUAAxkBAAMZaidQ8AAB-XcWZ92dfh1Nyj12vp9tAAL9D2sb2mc5VTJ5ySC9Sop4AQADAgADeQADOwQ"
 
-# ─── PREMIUM ANIMATED EMOJIS ──────────────────────────────────────────────────
-def pe(emoji_id, fallback):
-    return f'<tg-emoji emoji-id="{emoji_id}">{fallback}</tg-emoji>'
+# ─── PREMIUM EMOJIS ───────────────────────────────────────────────────────────
+def pe(eid, fb): return f'<tg-emoji emoji-id="{eid}">{fb}</tg-emoji>'
 
 E_FIRE    = pe("5424972470023104089", "🔥")
 E_DIAMOND = pe("5427168083074628963", "💎")
@@ -38,7 +37,7 @@ E_MONEY   = pe("5224257782013769471", "💰")
 E_STAR    = pe("5438496463044752972", "⭐")
 E_CROWN   = pe("5217822164362739968", "👑")
 E_TROPHY  = pe("5413566144986503832", "🏆")
-E_CHART   = pe("5429651785352501917", "📈")
+E_CHART   = pe("5244837092042750681", "📈")  # NEW ID
 E_GIFT    = pe("5203996991054432397", "🎁")
 E_CHECK   = pe("5206607081334906820", "✅")
 E_CROSS   = pe("5210952531676504517", "❌")
@@ -51,6 +50,9 @@ E_CLOCK   = pe("5431807687136395567", "⏰")
 E_PARTY   = pe("5461151367559141950", "🎉")
 E_HAND    = pe("5305522282695768654", "👇")
 E_EYES    = pe("5210956306952758910", "👀")
+E_TARGET  = pe("6185808707985608949", "🎯")  # NEW
+E_THUMBS  = pe("5337080053119336309", "👍")  # NEW
+E_CHAT    = pe("5443038326535759644", "💬")  # NEW
 
 user_state: dict = {}
 
@@ -93,54 +95,70 @@ def cancel_reminder(state):
     if state.get("reminder_task") and not state["reminder_task"].done():
         state["reminder_task"].cancel()
 
-# ─── KEYBOARDS ────────────────────────────────────────────────────────────────
+# ─── COLORED KEYBOARDS ────────────────────────────────────────────────────────
+# Button colors in Telegram are determined by the FIRST emoji in button text:
+# 🟢 Green  = ✅ 🟢 💚
+# 🔴 Red    = ❌ 🔴 
+# 🟡 Yellow = ⭐ 🌟 ⚠️
+# 🔵 Blue   = 🔵 💙 📘
+# 🟣 Purple = 💜 🔮
+# ⚫ Dark   = 🖤 ⚫
 
 def support_btn():
-    return InlineKeyboardButton("✉️ Contact Support 24/7 💬", url=SUPPORT)
+    return InlineKeyboardButton("🔵 Contact Support 24/7 💬", url=SUPPORT)
 
 def register_keyboard():
     return InlineKeyboardMarkup([
-        [InlineKeyboardButton("🔗 REGISTER FREE NOW ⭐", url=AFFILIATE)],
-        [InlineKeyboardButton("🔑 I HAVE REGISTERED ✨", callback_data="registered")],
-        [InlineKeyboardButton("✉️ CONTACT SUPPORT 💬", url=SUPPORT)],
+        [InlineKeyboardButton("🟢 REGISTER FREE NOW ⭐", url=AFFILIATE)],
+        [InlineKeyboardButton("🟡 I HAVE REGISTERED 🔑", callback_data="registered")],
+        [InlineKeyboardButton("🔵 CONTACT SUPPORT 💬", url=SUPPORT)],
     ])
 
 def deposit_keyboard():
     return InlineKeyboardMarkup([
-        [InlineKeyboardButton("🎁 Claim 50% Bonus NOW 🎊", callback_data="claim_bonus")],
-        [InlineKeyboardButton("✅ I Have Deposited 💸", callback_data="deposited")],
-        [support_btn()],
+        [InlineKeyboardButton("🟢 Claim 50% Bonus NOW 🎁", callback_data="claim_bonus")],
+        [InlineKeyboardButton("🔴 I Have Deposited (Re-Check) 🔄", callback_data="deposited")],
+        [InlineKeyboardButton("🔵 Contact Support 💬", url=SUPPORT)],
     ])
 
 def reject_keyboard():
     return InlineKeyboardMarkup([
-        [InlineKeyboardButton("🔗 Register With Our Link ⭐", url=AFFILIATE)],
-        [InlineKeyboardButton("🔄 Try Again With Correct ID", callback_data="try_again")],
-        [support_btn()],
+        [InlineKeyboardButton("🟢 Register With Our Link ⭐", url=AFFILIATE)],
+        [InlineKeyboardButton("🟡 Try Again With Correct ID 🔄", callback_data="try_again")],
+        [InlineKeyboardButton("🔵 Contact Support 💬", url=SUPPORT)],
     ])
 
 def reminder_keyboard():
     return InlineKeyboardMarkup([
-        [InlineKeyboardButton("🚀 Create Free Account Now ⭐", url=AFFILIATE)],
-        [InlineKeyboardButton("🔥 Click Here To Join VIP 👆", url=AFFILIATE)],
-        [support_btn()],
+        [InlineKeyboardButton("🟢 Create Free Account Now 🚀", url=AFFILIATE)],
+        [InlineKeyboardButton("🟢 Click Here To Join VIP 🔥", url=AFFILIATE)],
+        [InlineKeyboardButton("🔵 Contact Support 💬", url=SUPPORT)],
     ])
 
 def bonus_keyboard():
     return InlineKeyboardMarkup([
-        [InlineKeyboardButton("💰 Deposit Now & Get 50% Bonus 💥", url=AFFILIATE)],
-        [InlineKeyboardButton("✅ I Have Deposited ✨", callback_data="deposited")],
-        [support_btn()],
+        [InlineKeyboardButton("🟢 Deposit Now & Get 50% Bonus 💥", url=AFFILIATE)],
+        [InlineKeyboardButton("🔴 I Have Deposited ✅", callback_data="deposited")],
+        [InlineKeyboardButton("🔵 Contact Support 💬", url=SUPPORT)],
     ])
 
 def vip_keyboard():
     return InlineKeyboardMarkup([
-        [InlineKeyboardButton("👑 JOIN VIP SIGNALS GROUP 🏆", url=VIP_LINK)],
-        [support_btn()],
+        [InlineKeyboardButton("🟣 JOIN VIP SIGNALS GROUP 👑", url=VIP_LINK)],
+        [InlineKeyboardButton("🔵 Contact Support 💬", url=SUPPORT)],
     ])
 
 def support_keyboard():
-    return InlineKeyboardMarkup([[support_btn()]])
+    return InlineKeyboardMarkup([
+        [InlineKeyboardButton("🔵 Contact Support 24/7 💬", url=SUPPORT)]
+    ])
+
+def recheck_keyboard():
+    return InlineKeyboardMarkup([
+        [InlineKeyboardButton("🟢 Deposit Now 💰", url=AFFILIATE)],
+        [InlineKeyboardButton("🔴 I Have Deposited (Re-Check) 🔄", callback_data="deposited")],
+        [InlineKeyboardButton("🔵 Contact Support 💬", url=SUPPORT)],
+    ])
 
 # ─── REMINDER ─────────────────────────────────────────────────────────────────
 
@@ -194,8 +212,8 @@ async def verify_id_then_respond(uid, chat_id, bot):
             text=(
                 f"<b>{E_CROSS} Bro, this account is NOT registered through my link! {E_WARN}\n\n"
                 f"Please re-check and send the correct Trader ID. {E_EYES}\n\n"
-                f"{E_PHONE} If you are facing any problem, please contact us anytime.\n"
-                f"{E_CLOCK} Our team is available 24/7! 💬</b>"
+                f"{E_CHAT} If you are facing any problem, please contact us anytime.\n"
+                f"{E_CLOCK} Our team is available 24/7!</b>"
             ),
             parse_mode=ParseMode.HTML,
             reply_markup=reject_keyboard()
@@ -213,7 +231,7 @@ async def verify_id_then_respond(uid, chat_id, bot):
         await bot.edit_message_text(
             chat_id=chat_id,
             message_id=msg.message_id,
-            text=f"<b>{E_CHECK} ID <code>{uid}</code> verified! {E_PARTY} Deposit confirmed! Granting VIP... {E_ROCKET}</b>",
+            text=f"<b>{E_CHECK} ID <code>{uid}</code> verified! {E_PARTY} Deposit confirmed! {E_ROCKET}</b>",
             parse_mode=ParseMode.HTML
         )
         await bot.send_message(
@@ -227,7 +245,7 @@ async def verify_id_then_respond(uid, chat_id, bot):
                 f"{E_CHART} Daily 10-20 Sureshot Trades\n"
                 f"{E_MONEY} Daily 5-10 Compounding Signals\n"
                 f"{E_STAR} All Trades 100% NON-MTG\n\n"
-                f"Welcome to the winning team! {E_TROPHY}</b>"
+                f"{E_THUMBS} Welcome to the winning team! {E_TROPHY}</b>"
             ),
             parse_mode=ParseMode.HTML,
             reply_markup=vip_keyboard()
@@ -237,7 +255,7 @@ async def verify_id_then_respond(uid, chat_id, bot):
         await bot.edit_message_text(
             chat_id=chat_id,
             message_id=msg.message_id,
-            text=f"<b>{E_CHECK} ID <code>{uid}</code> linked! Checking deposit... {E_EYES}</b>",
+            text=f"<b>{E_CHECK} ID <code>{uid}</code> linked! {E_EYES} Checking deposit...</b>",
             parse_mode=ParseMode.HTML
         )
         await bot.send_video(
@@ -281,9 +299,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         ),
         parse_mode=ParseMode.HTML,
         reply_markup=InlineKeyboardMarkup([
-            [InlineKeyboardButton("FREE VIP GROUP 📈", url="https://t.me/+s_guD0HJ0B9kYWM1")],
-            [InlineKeyboardButton("JOIN LOSS RECOVERY 🎯", url="https://t.me/+s_guD0HJ0B9kYWM1")],
-            [InlineKeyboardButton("CONTACT FOR HELP 💛", url=SUPPORT)],
+            [InlineKeyboardButton("🟢 FREE VIP GROUP 📈", url="https://t.me/+s_guD0HJ0B9kYWM1")],
+            [InlineKeyboardButton("🔴 JOIN LOSS RECOVERY 🎯", url="https://t.me/+s_guD0HJ0B9kYWM1")],
+            [InlineKeyboardButton("🔵 CONTACT FOR HELP 💬", url=SUPPORT)],
         ])
     )
 
@@ -401,7 +419,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 f"{E_TROPHY} You are now a verified VIP member!\n\n"
                 f"{E_FIRE} Join our Exclusive VIP Signals Group NOW:\n\n"
                 f"{E_DIAMOND} {VIP_LINK} {E_DIAMOND}\n\n"
-                f"Welcome to the winning team! {E_TROPHY}</b>",
+                f"{E_THUMBS} Welcome to the winning team! {E_TROPHY}</b>",
                 parse_mode=ParseMode.HTML,
                 reply_markup=vip_keyboard()
             )
@@ -409,13 +427,9 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await query.message.reply_text(
                 f"<b>{E_WARN} Bro, your balance is still ZERO! {E_CROSS}\n\n"
                 f"Account (ID: <code>{uid}</code>) shows: <b>${dep:.2f}</b>\n\n"
-                f"{E_MONEY} Please deposit <b>$20 or more</b> and send me your Trader ID again! {E_HAND}</b>",
+                f"{E_MONEY} Please deposit <b>$20 or more</b> and click Re-Check! {E_HAND}</b>",
                 parse_mode=ParseMode.HTML,
-                reply_markup=InlineKeyboardMarkup([
-                    [InlineKeyboardButton("💰 Deposit Now 💥", url=AFFILIATE)],
-                    [InlineKeyboardButton("✅ I Have Deposited ✨", callback_data="deposited")],
-                    [support_btn()],
-                ])
+                reply_markup=recheck_keyboard()
             )
 
 
