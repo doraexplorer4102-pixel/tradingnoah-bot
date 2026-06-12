@@ -15,7 +15,7 @@ from telegram.ext import (
 from telegram.constants import ParseMode
 import pg8000.native
 
-TOKEN        = "8972809832:AAH2MiTUvrv9dEE9q0O1fvXMeasgi3k4E7c"
+TOKEN        = "8972809832:AAEyWhpky-MUIY9Q7pm1pOTQzKgYbk1gRcw"
 VIP_LINK     = "https://t.me/+H3isrme8c3BiNDg1"
 AFFILIATE    = "https://broker-qx.pro/sign-up/?lid=1504736"
 SUPPORT      = "https://t.me/TRADELIKENOAH"
@@ -91,47 +91,47 @@ def cancel_reminder(state):
         state["reminder_task"].cancel()
 
 def support_btn():
-    return InlineKeyboardButton("✉️ Contact Support 24/7", url=SUPPORT, style="primary")
+    return InlineKeyboardButton("✉️ Contact Support 24/7", url=SUPPORT)
 
 def register_keyboard():
     return InlineKeyboardMarkup([
-        [InlineKeyboardButton("🔗 REGISTER FREE NOW ⭐", url=AFFILIATE, style="success")],
-        [InlineKeyboardButton("🔑 I HAVE REGISTERED ✨", callback_data="registered", style="primary")],
-        [InlineKeyboardButton("✉️ CONTACT SUPPORT", url=SUPPORT, style="primary")],
+        [InlineKeyboardButton("🔗 REGISTER FREE NOW ⭐", url=AFFILIATE)],
+        [InlineKeyboardButton("🔑 I HAVE REGISTERED ✨", callback_data="registered")],
+        [InlineKeyboardButton("✉️ CONTACT SUPPORT", url=SUPPORT)],
     ])
 
 def deposit_keyboard():
     return InlineKeyboardMarkup([
-        [InlineKeyboardButton("🎁 Claim 50% Bonus NOW", callback_data="claim_bonus", style="success")],
-        [InlineKeyboardButton("🔄 I Have Deposited (Re-Check)", callback_data="deposited", style="danger")],
-        [InlineKeyboardButton("✉️ Contact Support", url=SUPPORT, style="primary")],
+        [InlineKeyboardButton("🎁 Claim 50% Bonus NOW", callback_data="claim_bonus")],
+        [InlineKeyboardButton("🔄 I Have Deposited (Re-Check)", callback_data="deposited")],
+        [InlineKeyboardButton("✉️ Contact Support", url=SUPPORT)],
     ])
 
 def reject_keyboard():
     return InlineKeyboardMarkup([
-        [InlineKeyboardButton("🔗 Register With Our Link", url=AFFILIATE, style="success")],
-        [InlineKeyboardButton("🔄 Try Again With Correct ID", callback_data="try_again", style="primary")],
-        [InlineKeyboardButton("✉️ Contact Support", url=SUPPORT, style="primary")],
+        [InlineKeyboardButton("🔗 Register With Our Link", url=AFFILIATE)],
+        [InlineKeyboardButton("🔄 Try Again With Correct ID", callback_data="try_again")],
+        [InlineKeyboardButton("✉️ Contact Support", url=SUPPORT)],
     ])
 
 def reminder_keyboard():
     return InlineKeyboardMarkup([
-        [InlineKeyboardButton("🚀 Create Free Account Now", url=AFFILIATE, style="success")],
-        [InlineKeyboardButton("🔥 Click Here To Join VIP", url=AFFILIATE, style="success")],
-        [InlineKeyboardButton("✉️ Contact Support", url=SUPPORT, style="primary")],
+        [InlineKeyboardButton("🚀 Create Free Account Now", url=AFFILIATE)],
+        [InlineKeyboardButton("🔥 Click Here To Join VIP", url=AFFILIATE)],
+        [InlineKeyboardButton("✉️ Contact Support", url=SUPPORT)],
     ])
 
 def bonus_keyboard():
     return InlineKeyboardMarkup([
-        [InlineKeyboardButton("💰 Deposit Now & Get 50% Bonus", url=AFFILIATE, style="success")],
-        [InlineKeyboardButton("✅ I Have Deposited", callback_data="deposited", style="danger")],
-        [InlineKeyboardButton("✉️ Contact Support", url=SUPPORT, style="primary")],
+        [InlineKeyboardButton("💰 Deposit Now & Get 50% Bonus", url=AFFILIATE)],
+        [InlineKeyboardButton("✅ I Have Deposited", callback_data="deposited")],
+        [InlineKeyboardButton("✉️ Contact Support", url=SUPPORT)],
     ])
 
 def vip_keyboard():
     return InlineKeyboardMarkup([
-        [InlineKeyboardButton("👑 JOIN VIP SIGNALS GROUP 🏆", url=VIP_LINK, style="success")],
-        [InlineKeyboardButton("✉️ Contact Support", url=SUPPORT, style="primary")],
+        [InlineKeyboardButton("👑 JOIN VIP SIGNALS GROUP 🏆", url=VIP_LINK)],
+        [InlineKeyboardButton("✉️ Contact Support", url=SUPPORT)],
     ])
 
 def support_keyboard():
@@ -139,9 +139,9 @@ def support_keyboard():
 
 def recheck_keyboard():
     return InlineKeyboardMarkup([
-        [InlineKeyboardButton("💰 Deposit Now", url=AFFILIATE, style="success")],
-        [InlineKeyboardButton("🔄 I Have Deposited (Re-Check)", callback_data="deposited", style="danger")],
-        [InlineKeyboardButton("✉️ Contact Support", url=SUPPORT, style="primary")],
+        [InlineKeyboardButton("💰 Deposit Now", url=AFFILIATE)],
+        [InlineKeyboardButton("🔄 I Have Deposited (Re-Check)", callback_data="deposited")],
+        [InlineKeyboardButton("✉️ Contact Support", url=SUPPORT)],
     ])
 
 async def send_reminder(chat_id, bot):
@@ -191,9 +191,9 @@ async def run_start_sequence(chat_id, bot, state):
             ),
             parse_mode=ParseMode.HTML,
             reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton("📈 FREE VIP GROUP", url="https://t.me/+s_guD0HJ0B9kYWM1", style="success")],
-                [InlineKeyboardButton("🎯 JOIN LOSS RECOVERY", url="https://t.me/+s_guD0HJ0B9kYWM1", style="danger")],
-                [InlineKeyboardButton("💬 CONTACT FOR HELP", url=SUPPORT, style="primary")],
+                [InlineKeyboardButton("📈 FREE VIP GROUP", url="https://t.me/+s_guD0HJ0B9kYWM1")],
+                [InlineKeyboardButton("🎯 JOIN LOSS RECOVERY", url="https://t.me/+s_guD0HJ0B9kYWM1")],
+                [InlineKeyboardButton("💬 CONTACT FOR HELP", url=SUPPORT)],
             ])
         )
 
