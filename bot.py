@@ -81,6 +81,23 @@ def db_get_trader(uid):
         print(f"DB error: {e}")
         return None
 
+
+def db_save_trader(uid, deposit=0.0, status="", country=""):
+    try:
+        conn = get_db()
+        conn.run("""
+            INSERT INTO verified_traders (uid, deposit, status, country, updated_at)
+            VALUES (:uid, :dep, :status, :country, NOW())
+            ON CONFLICT (uid) DO UPDATE SET
+                deposit = GREATEST(verified_traders.deposit, EXCLUDED.deposit),
+                status = EXCLUDED.status,
+                updated_at = NOW()
+        """, uid=uid, dep=float(deposit), status=status, country=country)
+        conn.close()
+        print(f"✅ Saved trader: {uid} dep=${deposit} status={status}")
+    except Exception as e:
+        print(f"DB save error: {e}")
+
 def get_state(chat_id):
     if chat_id not in user_state:
         user_state[chat_id] = {"step": "start", "trader_id": None, "deposit": 0.0, "reminder_task": None}
@@ -469,10 +486,89 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             state["step"] = "checking"
             asyncio.create_task(verify_id_then_respond(text, chat_id, context.bot))
 
-tg_app = ApplicationBuilder().token(TOKEN).build()
-tg_app.add_handler(CommandHandler("start", start))
-tg_app.add_handler(CallbackQueryHandler(button_handler))
-tg_app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, message_handler))
 
-print("✅ Trading Noah Bot Running...")
-tg_app.run_polling(drop_pending_updates=True)
+async def handle_postback(request):
+    """Receives postbacks directly from Quotex"""
+    from aiohttp import web
+    params = request.rel_url.query
+    
+    def get_real(key):
+        val = params.get(key, "").strip()
+        if val.startswith("{") and val.endswith("}"):
+            return ""
+        return val
+    
+    uid     = get_real("uid")
+    status  = get_real("status") 
+    sumdep  = float(get_real("sumdep") or 0)
+    country = get_real("country") or "N/A"
+    
+    print(f"POSTBACK: uid={uid} status={status} dep={sumdep}")
+    
+    if uid:
+        db_save_trader(uid, sumdep, status, country)
+        # Auto send VIP if deposited
+        if sumdep >= MIN_DEPOSIT:
+            for chat_id, state in user_state.items():
+                if state.get("trader_id") == uid and state["step"] != "done":
+                    state["deposit"] = sumdep
+                    state["step"] = "done"
+                    try:
+                        await tg_app.bot.send_message(
+                            chat_id=chat_id,
+                            text=(
+                                f"<b>{E_PARTY} Deposit Confirmed! WELCOME TO VIP! {E_CROWN}\n\n"
+                                f"{E_FIRE} Join VIP:\n{VIP_LINK}\n\n"
+                                f"{E_THUMBS} Welcome! {E_TROPHY}</b>"
+                            ),
+                            parse_mode=ParseMode.HTML,
+                            reply_markup=vip_keyboard()
+                        )
+                    except Exception as e:
+                        print(f"VIP send error: {e}")
+                    break
+    
+    return web.Response(text="OK")
+
+async def handle_addid(request):
+    from aiohttp import web
+    uid = request.rel_url.query.get("uid", "").strip()
+    key = request.rel_url.query.get("key", "")
+    if key != "quotexadmin2024":
+        return web.Response(text="Forbidden", status=403)
+    if uid:
+        db_save_trader(uid, 0.0, "manual", "")
+        return web.Response(text=f"Added: {uid}")
+    return web.Response(text="No uid")
+
+async def run_web_server():
+    from aiohttp import web
+    app = web.Application()
+    app.router.add_get("/postback", handle_postback)
+    app.router.add_get("/addid", handle_addid)
+    app.router.add_get("/", lambda r: web.Response(text="Trading Noah Bot Running"))
+    runner = web.AppRunner(app)
+    await runner.setup()
+    port = int(os.getenv("PORT", 8080))
+    site = web.TCPSite(runner, "0.0.0.0", port)
+    await site.start()
+    print(f"✅ Web server running on port {port}")
+
+async def main():
+    global tg_app
+    tg_app = ApplicationBuilder().token(TOKEN).build()
+    tg_app.add_handler(CommandHandler("start", start))
+    tg_app.add_handler(CallbackQueryHandler(button_handler))
+    tg_app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, message_handler))
+    
+    await run_web_server()
+    
+    print("✅ Trading Noah Bot Running...")
+    async with tg_app:
+        await tg_app.initialize()
+        await tg_app.start()
+        await tg_app.updater.start_polling(drop_pending_updates=True)
+        await asyncio.Event().wait()
+
+if __name__ == "__main__":
+    asyncio.run(main())
