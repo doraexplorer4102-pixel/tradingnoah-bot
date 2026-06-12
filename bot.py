@@ -23,6 +23,8 @@ DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:DEfYBWltENxssYQN
 MIN_DEPOSIT  = 20
 OWNER_ID     = int(os.getenv("OWNER_ID", "8837911637"))
 
+VIDEO_TUTORIAL = "BAACAgUAAxkBAAFMR_JqLHQgDfdvetmVFCu4tVoEmXayHwACkSEAAm6QYFUZ3EZET5TOdjwE"
+VIDEO_TUTORIAL = "BAACAgUAAxkBAAFMR_JqLHQgDfdvetmVFCu4tVoEmXayHwACkSEAAm6QYFUZ3EZET5TOdjwE"
 VIDEO_REMINDER = "BAACAgUAAxkBAAFMQIxqLCy8iLgzzjwMiMFm4ahJi-N-iwACQCQAAmS9YFWS4sMNJoZYFjwE"
 VIDEO_DEPOSIT  = "BQACAgUAAxkBAAFMQI5qLCzLxgL0oM6v_DRoWsq0R6ecMAACQiQAAmS9YFXmR4aJiqZyKjwE"
 BONUS_PHOTO    = "AgACAgUAAxkBAAIIE2osaUQb9q2xShFHMQQXqQOhpy6IAAKaE2sbeuFgVY1Aj7qvPgy_AQADAgADeQADPAQ"
@@ -121,6 +123,7 @@ def register_keyboard():
 def deposit_keyboard():
     return InlineKeyboardMarkup([
         [InlineKeyboardButton("🎁 Claim 50% Bonus NOW", callback_data="claim_bonus")],
+        [InlineKeyboardButton("📹 How To Deposit (Tutorial)", callback_data="tutorial")],
         [InlineKeyboardButton("🔄 I Have Deposited (Re-Check)", callback_data="deposited")],
         [InlineKeyboardButton("✉️ Contact Support", url=SUPPORT)],
     ])
@@ -255,8 +258,8 @@ async def run_start_sequence(chat_id, bot, state):
             reply_markup=support_keyboard()
         )
 
-        print(f"START SEQ step 8: sleep 20")
-        await asyncio.sleep(20)
+        print(f"START SEQ step 8: sleep 3 min")
+        await asyncio.sleep(180)
 
         print(f"START SEQ step 9: registration video")
         await bot.send_video(
@@ -426,6 +429,40 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 f"4️⃣ Reply with that <b>8-digit code</b> {E_HAND}</b>"
             ),
             parse_mode=ParseMode.HTML, reply_markup=support_keyboard()
+        )
+
+    elif query.data == "tutorial":
+        await context.bot.send_video(
+            chat_id=chat_id,
+            video=VIDEO_TUTORIAL,
+            caption=(
+                f"<b>{E_MONEY} How To Deposit Tutorial {E_CHART}\n\n"
+                f"👆 Watch this video to learn how to deposit on Quotex!\n\n"
+                f"{E_GIFT} Use code <code>NOAH50</code> for 50% bonus on deposit! {E_FIRE}</b>"
+            ),
+            parse_mode=ParseMode.HTML,
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton("💰 Deposit Now", url=AFFILIATE)],
+                [InlineKeyboardButton("🔄 I Have Deposited (Re-Check)", callback_data="deposited")],
+                [InlineKeyboardButton("✉️ Contact Support", url=SUPPORT)],
+            ])
+        )
+
+    elif query.data == "tutorial":
+        await context.bot.send_video(
+            chat_id=chat_id,
+            video="BAACAgUAAxkBAAFMR_JqLHQgDfdvetmVFCu4tVoEmXayHwACkSEAAm6QYFUZ3EZET5TOdjwE",
+            caption=(
+                f"<b>{E_MONEY} How To Deposit Tutorial {E_CHART}\n\n"
+                f"👆 Watch this video to learn how to deposit on Quotex!\n\n"
+                f"{E_GIFT} Use code <code>NOAH50</code> for 50% bonus! {E_FIRE}</b>"
+            ),
+            parse_mode=ParseMode.HTML,
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton("💰 Deposit Now", url=AFFILIATE)],
+                [InlineKeyboardButton("🔄 I Have Deposited (Re-Check)", callback_data="deposited")],
+                [InlineKeyboardButton("✉️ Contact Support", url=SUPPORT)],
+            ])
         )
 
     elif query.data == "claim_bonus":
