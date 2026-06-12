@@ -166,145 +166,123 @@ def recheck_keyboard():
         [InlineKeyboardButton("✉️ Contact Support 24/7", url=SUPPORT)],
     ])
 
+async def send_one_reminder(chat_id, bot, reminder_num):
+    """Send a single reminder by number (1-5)"""
+    try:
+        if reminder_num == 1:
+            await bot.send_photo(
+                chat_id=chat_id,
+                photo="AgACAgUAAxkBAAIIhmosfzneQ76I3CuhlSHtj80p5vazAALCEGsbrGtoVSAOT8CWevovAQADAgADeQADPAQ",
+                caption="ZERO TO HERO JOURNEY VIDEO 📌❗️❗️❗️❗️❗️❗️❗️❗️\nhttps://youtu.be/q1a8FZ8T4XU?si=bMvgGhQ1Ru6nLayx\n👆👆WATCH MY TRADING JOURNEY VIDEO ( MUST WATCH ) 🔥📣"
+            )
+            await bot.send_video_note(
+                chat_id=chat_id,
+                video_note="DQACAgUAAxkBAAFMSQhqLIb67doN1uewmuPt5oUt44kzOQACdR4AAqxraFW9yKKdMgc2AjwE",
+                reply_markup=InlineKeyboardMarkup([
+                    [InlineKeyboardButton("▶️ Watch Video Click Here", url="https://youtu.be/q1a8FZ8T4XU?si=bMvgGhQ1Ru6nLayx")],
+                    [InlineKeyboardButton("🔑 Register Your Account", callback_data="registered")],
+                    [InlineKeyboardButton("✉️ Contact Support 24/7", url=SUPPORT)],
+                ])
+            )
+        elif reminder_num == 2:
+            await bot.send_video(
+                chat_id=chat_id,
+                video="BAACAgUAAxkBAAFMSPJqLIWlmSn5W5Vl0YtME2reEchEvgACoB0AAmnTSFQUiVIEIzqvlDwE",
+                caption=(
+                    "🚨DON'T SKIP | VIDEO OPEN KAR 🚨\n"
+                    "👀 Proof dekh le pehle, phir decision lena\n\n"
+                    "📊 TODAY'S LIVE TRADING RESULTS\n\n"
+                    "☀️ Morning Session\n👉 2 Signals → 2/2 WIN\n❌ No Martingale | 🔥 Deep Win\n\n"
+                    "☀️ Afternoon Session\n👉 2 Signals → 2/2 WIN\n❌ No Martingale | 💎 Deep Win\n\n"
+                    "🌛 Evening Session\n👉 3 Signals\n🤔 3 Direct Win\n❌ No Martingale | 💎 Deep Win\n\n"
+                    "👀 YESTERDAY RESULT\n- 17 WIN / 0 LOSS 🔥💵📈\n\n"
+                    "💬 VIP join karna hai?\n✉️ Message \"VIP\" ➡️ @TRADELIKENOAH"
+                ),
+                reply_markup=InlineKeyboardMarkup([
+                    [InlineKeyboardButton("🔑 Register Your Account", callback_data="registered")],
+                    [InlineKeyboardButton("✉️ Contact Support 24/7", url=SUPPORT)],
+                ])
+            )
+        elif reminder_num == 3:
+            await bot.send_photo(
+                chat_id=chat_id,
+                photo="AgACAgUAAxkBAAIIh2osfzsGVAMzCEnZf_8G2pjVFN3oAALDEGsbrGtoVYaoZ4WKYIjGAQADAgADeQADPAQ",
+                caption="TRADER OF THE WEEK 🦁🏆❗️❗️❗️❗️❗️❗️❗️❗️\nhttps://youtu.be/q1a8FZ8T4XU?si=bMvgGhQ1Ru6nLayx\n👆👆WATCH HOW I MADE $40,000 ( ₹35,00,000 ) IN A WEEK 🔥🚨"
+            )
+            await bot.send_video_note(
+                chat_id=chat_id,
+                video_note="DQACAgUAAxkBAAFMSQpqLIcHtKjTGEyoV6FLw6eHtiakFAACdh4AAqxraFXB9SIHnO1XujwE",
+                reply_markup=InlineKeyboardMarkup([
+                    [InlineKeyboardButton("▶️ Watch Video Click Here", url="https://youtu.be/q1a8FZ8T4XU?si=bMvgGhQ1Ru6nLayx")],
+                    [InlineKeyboardButton("🔑 Register Your Account", callback_data="registered")],
+                    [InlineKeyboardButton("✉️ Contact Support 24/7", url=SUPPORT)],
+                ])
+            )
+        elif reminder_num == 4:
+            await bot.send_video(
+                chat_id=chat_id,
+                video="BAACAgUAAxkBAAFMSPZqLIWx4pTuzb98rHinaimoXeAyUQACnCEAAtCiOFSei_vCioOGDzwE",
+                caption=(
+                    "₹1,000 se ₹5,00,000 — sirf mere VIP signals follow karke 💵📈\n\n"
+                    "Ye koi kahani nahi, real results hain. ☄️\n\n"
+                    "My VIP member booked Z900 bike 😱🏍\n\n"
+                    "▶️LIVE VIDEO PROOF CHECK NOW 👆👆\n\n"
+                    "Aaj bhi agar tum VIP channel join nahi kar rahe,\n"
+                    "toh honestly tum apna hi nuksaan kar rahe ho.\n\n"
+                    "⌛ Time waste mat karo.\n"
+                    "🚀 Next success story tumhari ho sakti hai\n\n"
+                    "✉️ JOIN NOW — Message me \"VIP\"\n"
+                    "📱 MESSAGE HERE ➡️ @TRADELIKENOAH"
+                ),
+                reply_markup=InlineKeyboardMarkup([
+                    [InlineKeyboardButton("🔑 Register Your Account", callback_data="registered")],
+                    [InlineKeyboardButton("✉️ Contact Support 24/7", url=SUPPORT)],
+                ])
+            )
+        elif reminder_num == 5:
+            await bot.send_photo(
+                chat_id=chat_id,
+                photo="AgACAgUAAxkBAAIIoWoshS8UEUP49vFEPnYbcVsdp1G7AALEEGsbrGtoVeld-Rt8y727AQADAgADeQADPAQ",
+                caption=(
+                    "Bhai, aaj is photo mein tu mere maa-baap ko dekh raha hoga 👍\n"
+                    "Unke face ki khushi notice kar… aaj woh kitna proud feel karte hain 🫂\n"
+                    "Unhone mere saath kitni gaadiyaan dekhi 🚘\n"
+                    "Kitni jagah world mein ghoome 🌎\n"
+                    "Aaj woh khud bolte hain — \"tere jaisa beta sabko mile.\"\n\n"
+                    "Lekin sach kya hai? Yeh sab ek din mein nahi hua.\n"
+                    "Iske peeche sirf ek cheez thi — PAISA 💵\n\n"
+                    "Agar tu bhi chahta hai ki ek din tere maa-baap bhi proud feel karein,\n"
+                    "Log bolein — \"Bhai, kya beta paida kiya hai!\"\n\n"
+                    "Aur agar tujhe genuinely paisa kamana hai,\n"
+                    "High quality trading signals chahiye,\n"
+                    "Toh abhi meri ID par message kar — \" VIP \" ➡️ @TRADELIKENOAH"
+                ),
+                reply_markup=InlineKeyboardMarkup([
+                    [InlineKeyboardButton("🔑 Register Your Account", callback_data="registered")],
+                    [InlineKeyboardButton("✉️ Contact Support 24/7", url=SUPPORT)],
+                ])
+            )
+    except Exception as e:
+        print(f"Reminder {reminder_num} error: {e}")
+
+
 async def send_reminder(chat_id, bot):
-    """Send 5 auto reminders every 3 hours to users stuck before VIP"""
-    
-    def should_remind(chat_id):
+    """Send 5 reminders every 3 hours in an infinite loop after registration video"""
+    reminder_num = 1
+    while True:
         state = get_state(chat_id)
-        return state.get("step") not in ("done",)
+        if state.get("step") == "done":
+            return  # Stop if user joined VIP
 
-    # Reminder 1 — after 3 hours
-    await asyncio.sleep(10800)
-    if not should_remind(chat_id): return
-    try:
-        await bot.send_photo(
-            chat_id=chat_id,
-            photo="AgACAgUAAxkBAAIIhmosfzneQ76I3CuhlSHtj80p5vazAALCEGsbrGtoVSAOT8CWevovAQADAgADeQADPAQ",
-            caption="ZERO TO HERO JOURNEY VIDEO 📌❗️❗️❗️❗️❗️❗️❗️❗️\nhttps://youtu.be/q1a8FZ8T4XU?si=bMvgGhQ1Ru6nLayx\n👆👆WATCH MY TRADING JOURNEY VIDEO ( MUST WATCH ) 🔥📣"
-        )
-        await bot.send_video_note(
-            chat_id=chat_id,
-            video_note="DQACAgUAAxkBAAFMSQhqLIb67doN1uewmuPt5oUt44kzOQACdR4AAqxraFW9yKKdMgc2AjwE",
-            reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton("▶️ Watch Video Click Here", url="https://youtu.be/q1a8FZ8T4XU?si=bMvgGhQ1Ru6nLayx")],
-                [InlineKeyboardButton("🔑 Register Your Account", callback_data="registered")],
-                [InlineKeyboardButton("✉️ Contact Support 24/7", url=SUPPORT)],
-            ])
-        )
-    except Exception as e:
-        print(f"Reminder 1 error: {e}")
+        await asyncio.sleep(10800)  # Wait 3 hours
 
-    # Reminder 2 — after 6 hours
-    await asyncio.sleep(10800)
-    if not should_remind(chat_id): return
-    try:
-        await bot.send_video(
-            chat_id=chat_id,
-            video="BAACAgUAAxkBAAFMSPJqLIWlmSn5W5Vl0YtME2reEchEvgACoB0AAmnTSFQUiVIEIzqvlDwE",
-            caption=(
-                "🚨DON'T SKIP | VIDEO OPEN KAR 🚨\n"
-                "👀 Proof dekh le pehle, phir decision lena\n\n"
-                "📊 TODAY'S LIVE TRADING RESULTS\n\n"
-                "☀️ Morning Session\n"
-                "👉 2 Signals → 2/2 WIN\n"
-                "❌ No Martingale | 🔥 Deep Win\n\n"
-                "☀️ Afternoon Session\n"
-                "👉 2 Signals → 2/2 WIN\n"
-                "❌ No Martingale | 💎 Deep Win\n\n"
-                "🌛 Evening Session\n"
-                "👉 3 Signals\n"
-                "🤔 3 Direct Win\n"
-                "❌ No Martingale | 💎 Deep Win\n\n"
-                "👀 YESTERDAY RESULT\n"
-                "- 17 WIN / 0 LOSS 🔥💵📈\n\n"
-                "💬 VIP join karna hai?\n"
-                "✉️ Message \"VIP\" ➡️ @TRADELIKENOAH"
-            ),
-            reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton("🔑 Register Your Account", callback_data="registered")],
-                [InlineKeyboardButton("✉️ Contact Support 24/7", url=SUPPORT)],
-            ])
-        )
-    except Exception as e:
-        print(f"Reminder 2 error: {e}")
+        state = get_state(chat_id)
+        if state.get("step") == "done":
+            return
 
-    # Reminder 3 — after 9 hours
-    await asyncio.sleep(10800)
-    if not should_remind(chat_id): return
-    try:
-        await bot.send_photo(
-            chat_id=chat_id,
-            photo="AgACAgUAAxkBAAIIh2osfzsGVAMzCEnZf_8G2pjVFN3oAALDEGsbrGtoVYaoZ4WKYIjGAQADAgADeQADPAQ",
-            caption="TRADER OF THE WEEK 🦁🏆❗️❗️❗️❗️❗️❗️❗️❗️\nhttps://youtu.be/q1a8FZ8T4XU?si=bMvgGhQ1Ru6nLayx\n👆👆WATCH HOW I MADE $40,000 ( ₹35,00,000 ) IN A WEEK 🔥🚨"
-        )
-        await bot.send_video_note(
-            chat_id=chat_id,
-            video_note="DQACAgUAAxkBAAFMSQpqLIcHtKjTGEyoV6FLw6eHtiakFAACdh4AAqxraFXB9SIHnO1XujwE",
-            reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton("▶️ Watch Video Click Here", url="https://youtu.be/q1a8FZ8T4XU?si=bMvgGhQ1Ru6nLayx")],
-                [InlineKeyboardButton("🔑 Register Your Account", callback_data="registered")],
-                [InlineKeyboardButton("✉️ Contact Support 24/7", url=SUPPORT)],
-            ])
-        )
-    except Exception as e:
-        print(f"Reminder 3 error: {e}")
+        await send_one_reminder(chat_id, bot, reminder_num)
 
-    # Reminder 4 — after 12 hours
-    await asyncio.sleep(10800)
-    if not should_remind(chat_id): return
-    try:
-        await bot.send_video(
-            chat_id=chat_id,
-            video="BAACAgUAAxkBAAFMSPZqLIWx4pTuzb98rHinaimoXeAyUQACnCEAAtCiOFSei_vCioOGDzwE",
-            caption=(
-                "₹1,000 se ₹5,00,000 — sirf mere VIP signals follow karke 💵📈\n\n"
-                "Ye koi kahani nahi, real results hain. ☄️\n\n"
-                "My VIP member booked Z900 bike 😱🏍\n\n"
-                "▶️LIVE VIDEO PROOF CHECK NOW 👆👆\n\n"
-                "Aaj bhi agar tum VIP channel join nahi kar rahe,\n"
-                "toh honestly tum apna hi nuksaan kar rahe ho.\n\n"
-                "⌛ Time waste mat karo.\n"
-                "🚀 Next success story tumhari ho sakti hai\n\n"
-                "✉️ JOIN NOW — Message me \"VIP\"\n"
-                "📱 MESSAGE HERE ➡️ @TRADELIKENOAH"
-            ),
-            reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton("🔑 Register Your Account", callback_data="registered")],
-                [InlineKeyboardButton("✉️ Contact Support 24/7", url=SUPPORT)],
-            ])
-        )
-    except Exception as e:
-        print(f"Reminder 4 error: {e}")
-
-    # Reminder 5 — after 15 hours
-    await asyncio.sleep(10800)
-    if not should_remind(chat_id): return
-    try:
-        await bot.send_photo(
-            chat_id=chat_id,
-            photo="AgACAgUAAxkBAAIIoWoshS8UEUP49vFEPnYbcVsdp1G7AALEEGsbrGtoVeld-Rt8y727AQADAgADeQADPAQ",
-            caption=(
-                "Bhai, aaj is photo mein tu mere maa-baap ko dekh raha hoga 👍\n"
-                "Unke face ki khushi notice kar… aaj woh kitna proud feel karte hain 🫂\n"
-                "Unhone mere saath kitni gaadiyaan dekhi 🚘\n"
-                "Kitni jagah world mein ghoome 🌎\n"
-                "Aaj woh khud bolte hain — \"tere jaisa beta sabko mile.\"\n\n"
-                "Lekin sach kya hai?\n"
-                "Yeh sab ek din mein nahi hua.\n"
-                "Iske peeche sirf ek cheez thi — PAISA 💵\n\n"
-                "Agar tu bhi chahta hai ki ek din tere maa-baap bhi proud feel karein,\n"
-                "Log bolein — \"Bhai, kya beta paida kiya hai!\"\n\n"
-                "Aur agar tujhe genuinely paisa kamana hai,\n"
-                "High quality trading signals chahiye,\n"
-                "Toh abhi meri ID par message kar — \" VIP \" ➡️ @TRADELIKENOAH"
-            ),
-            reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton("🔑 Register Your Account", callback_data="registered")],
-                [InlineKeyboardButton("✉️ Contact Support 24/7", url=SUPPORT)],
-            ])
-        )
-    except Exception as e:
-        print(f"Reminder 5 error: {e}")
+        reminder_num = (reminder_num % 5) + 1  # Loop 1→2→3→4→5→1→2...
 
 async def run_start_sequence(chat_id, bot, state):
     try:
@@ -498,6 +476,20 @@ async def verify_id_then_respond(uid, chat_id, bot):
             )
         except Exception as e:
             print(f"Video send error: {e}")
+
+
+async def preview_reminder(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Preview any reminder instantly - /preview1 through /preview5"""
+    user_id = update.effective_user.id
+    if user_id != 8837911637:
+        return
+    cmd = update.message.text.strip().lower()
+    num = int(cmd.replace("/preview", "")) if cmd.replace("/preview", "").isdigit() else 0
+    if num < 1 or num > 5:
+        await update.message.reply_text("Use /preview1 to /preview5")
+        return
+    await update.message.reply_text(f"Sending reminder {num} preview...")
+    await send_one_reminder(update.effective_chat.id, context.bot, num)
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
@@ -738,6 +730,8 @@ async def main():
     global tg_app
     tg_app = ApplicationBuilder().token(TOKEN).build()
     tg_app.add_handler(CommandHandler("start", start))
+    for i in range(1, 6):
+        tg_app.add_handler(CommandHandler(f"preview{i}", preview_reminder))
     tg_app.add_handler(CallbackQueryHandler(button_handler))
     tg_app.add_handler(MessageHandler(filters.PHOTO | filters.VIDEO | filters.Document.ALL, photo_handler))
     tg_app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, message_handler))
