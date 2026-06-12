@@ -117,7 +117,7 @@ def register_keyboard():
     return InlineKeyboardMarkup([
         [InlineKeyboardButton("🔗 REGISTER FREE NOW ⭐", url=AFFILIATE)],
         [InlineKeyboardButton("🔑 I HAVE REGISTERED ✨", callback_data="registered")],
-        [InlineKeyboardButton("✉️ CONTACT SUPPORT", url=SUPPORT)],
+        [InlineKeyboardButton("✉️ CONTACT SUPPORT 24/7", url=SUPPORT)],
     ])
 
 def deposit_keyboard():
@@ -125,34 +125,35 @@ def deposit_keyboard():
         [InlineKeyboardButton("🎁 Claim 50% Bonus NOW", callback_data="claim_bonus")],
         [InlineKeyboardButton("📹 How To Deposit (Tutorial)", callback_data="tutorial")],
         [InlineKeyboardButton("🔄 I Have Deposited (Re-Check)", callback_data="deposited")],
-        [InlineKeyboardButton("✉️ Contact Support", url=SUPPORT)],
+        [InlineKeyboardButton("✉️ Contact Support 24/7", url=SUPPORT)],
     ])
 
 def reject_keyboard():
     return InlineKeyboardMarkup([
         [InlineKeyboardButton("🔗 Register With Our Link", url=AFFILIATE)],
         [InlineKeyboardButton("🔄 Try Again With Correct ID", callback_data="try_again")],
-        [InlineKeyboardButton("✉️ Contact Support", url=SUPPORT)],
+        [InlineKeyboardButton("✉️ Contact Support 24/7", url=SUPPORT)],
     ])
 
 def reminder_keyboard():
     return InlineKeyboardMarkup([
         [InlineKeyboardButton("🚀 Create Free Account Now", url=AFFILIATE)],
         [InlineKeyboardButton("🔥 Click Here To Join VIP", url=AFFILIATE)],
-        [InlineKeyboardButton("✉️ Contact Support", url=SUPPORT)],
+        [InlineKeyboardButton("✉️ Contact Support 24/7", url=SUPPORT)],
     ])
 
 def bonus_keyboard():
     return InlineKeyboardMarkup([
         [InlineKeyboardButton("💰 Deposit Now & Get 50% Bonus", url=AFFILIATE)],
+        [InlineKeyboardButton("📹 How To Deposit (Tutorial)", callback_data="tutorial")],
         [InlineKeyboardButton("✅ I Have Deposited", callback_data="deposited")],
-        [InlineKeyboardButton("✉️ Contact Support", url=SUPPORT)],
+        [InlineKeyboardButton("✉️ Contact Support 24/7", url=SUPPORT)],
     ])
 
 def vip_keyboard():
     return InlineKeyboardMarkup([
         [InlineKeyboardButton("👑 JOIN VIP SIGNALS GROUP 🏆", url=VIP_LINK)],
-        [InlineKeyboardButton("✉️ Contact Support", url=SUPPORT)],
+        [InlineKeyboardButton("✉️ Contact Support 24/7", url=SUPPORT)],
     ])
 
 def support_keyboard():
@@ -162,7 +163,7 @@ def recheck_keyboard():
     return InlineKeyboardMarkup([
         [InlineKeyboardButton("💰 Deposit Now", url=AFFILIATE)],
         [InlineKeyboardButton("🔄 I Have Deposited (Re-Check)", callback_data="deposited")],
-        [InlineKeyboardButton("✉️ Contact Support", url=SUPPORT)],
+        [InlineKeyboardButton("✉️ Contact Support 24/7", url=SUPPORT)],
     ])
 
 async def send_reminder(chat_id, bot):
@@ -189,19 +190,16 @@ async def send_reminder(chat_id, bot):
 
 async def run_start_sequence(chat_id, bot, state):
     try:
-        print(f"START SEQ step 1: sticker for {chat_id}")
+        # ── SEQUENCE 1: Immediate ─────────────────────────────────────────
+        # Sticker + video note + photo with buttons
         await bot.send_sticker(
             chat_id=chat_id,
             sticker="CAACAgUAAxkBAAFL9cVqKCa70-hZ2BsucTxBmLtRI2PFMAACBxIAArIYAAFXuG3a4VpEuLw7BA"
         )
-
-        print(f"START SEQ step 2: video note")
         await bot.send_video_note(
             chat_id=chat_id,
             video_note="DQACAgUAAxkBAAMbaidRKZuu4TnoWbcqd3A_KLQByFEAAs4cAAJfGjFXsw34l8lliF47BA"
         )
-
-        print(f"START SEQ step 3: photo")
         await bot.send_photo(
             chat_id=chat_id,
             photo="AgACAgUAAxkBAAMZaidQ8AAB-XcWZ92dfh1Nyj12vp9tAAL9D2sb2mc5VTJ5ySC9Sop4AQADAgADeQADOwQ",
@@ -214,14 +212,15 @@ async def run_start_sequence(chat_id, bot, state):
             reply_markup=InlineKeyboardMarkup([
                 [InlineKeyboardButton("📈 FREE VIP GROUP", url="https://t.me/+s_guD0HJ0B9kYWM1")],
                 [InlineKeyboardButton("🎯 JOIN LOSS RECOVERY", url="https://t.me/+s_guD0HJ0B9kYWM1")],
-                [InlineKeyboardButton("💬 CONTACT FOR HELP", url=SUPPORT)],
+                [InlineKeyboardButton("💬 CONTACT SUPPORT 24/7", url=SUPPORT)],
             ])
         )
 
-        print(f"START SEQ step 4: sleep 10")
-        await asyncio.sleep(10)
+        # ── WAIT 3 MINUTES ────────────────────────────────────────────────
+        await asyncio.sleep(180)
 
-        print(f"START SEQ step 5: intro text")
+        # ── SEQUENCE 2: +3 min ────────────────────────────────────────────
+        # Text message 1
         await bot.send_message(
             chat_id=chat_id,
             text=(
@@ -232,7 +231,7 @@ async def run_start_sequence(chat_id, bot, state):
             parse_mode=ParseMode.HTML
         )
 
-        print(f"START SEQ step 6: media album")
+        # Photo/Video Album
         media = [
             InputMediaVideo(media="BAACAgUAAxkBAAMtaidXNeAzsfiXzbzTipXYriM1QccAAr4fAALaZzlV3a9DaWKShwg7BA"),
             InputMediaVideo(media="BAACAgUAAxkBAAMuaidXP2WTrAFQHjfNb2BEEyFIFNEAAr8fAALaZzlVMwnVMRZdSwQ7BA"),
@@ -247,7 +246,7 @@ async def run_start_sequence(chat_id, bot, state):
         ]
         await bot.send_media_group(chat_id=chat_id, media=media)
 
-        print(f"START SEQ step 7: name question")
+        # Text message with button (name/country)
         await bot.send_message(
             chat_id=chat_id,
             text=(
@@ -258,10 +257,11 @@ async def run_start_sequence(chat_id, bot, state):
             reply_markup=support_keyboard()
         )
 
-        print(f"START SEQ step 8: sleep 3 min")
-        await asyncio.sleep(180)
+        # ── WAIT 4-5 MINUTES ──────────────────────────────────────────────
+        await asyncio.sleep(270)  # 4.5 minutes
 
-        print(f"START SEQ step 9: registration video")
+        # ── SEQUENCE 3: +4-5 min ──────────────────────────────────────────
+        # Registration tutorial video
         await bot.send_video(
             chat_id=chat_id,
             video="BAACAgUAAxkBAAOKaidpD_-7HAnZ9D2d-yGBmsLMW_QAAjcYAAI1GzlXipdJ8rzcwTs7BA",
@@ -274,12 +274,11 @@ async def run_start_sequence(chat_id, bot, state):
             reply_markup=register_keyboard()
         )
 
-        print(f"START SEQ complete!")
         state["reminder_task"] = asyncio.create_task(send_reminder(chat_id, bot))
 
     except Exception as e:
         import traceback
-        print(f"START SEQ ERROR at some step: {e}")
+        print(f"START SEQ ERROR: {e}")
         traceback.print_exc()
 
 async def verify_id_then_respond(uid, chat_id, bot):
@@ -444,7 +443,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=InlineKeyboardMarkup([
                 [InlineKeyboardButton("💰 Deposit Now", url=AFFILIATE)],
                 [InlineKeyboardButton("🔄 I Have Deposited (Re-Check)", callback_data="deposited")],
-                [InlineKeyboardButton("✉️ Contact Support", url=SUPPORT)],
+                [InlineKeyboardButton("✉️ Contact Support 24/7", url=SUPPORT)],
             ])
         )
 
@@ -461,7 +460,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=InlineKeyboardMarkup([
                 [InlineKeyboardButton("💰 Deposit Now", url=AFFILIATE)],
                 [InlineKeyboardButton("🔄 I Have Deposited (Re-Check)", callback_data="deposited")],
-                [InlineKeyboardButton("✉️ Contact Support", url=SUPPORT)],
+                [InlineKeyboardButton("✉️ Contact Support 24/7", url=SUPPORT)],
             ])
         )
 
