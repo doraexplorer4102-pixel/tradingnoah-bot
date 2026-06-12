@@ -166,102 +166,48 @@ def recheck_keyboard():
         [InlineKeyboardButton("✉️ Contact Support 24/7", url=SUPPORT)],
     ])
 
+
+
+# ─── REMINDER CAPTIONS ─────────────────────────────────────────────────────
+REM1_CAP = "<b><tg-emoji emoji-id='5397782960512444700'>📌</tg-emoji> ZERO TO HERO JOURNEY VIDEO <tg-emoji emoji-id='5397782960512444700'>📌</tg-emoji>\n<tg-emoji emoji-id='5274099962655816924'>❗️</tg-emoji><tg-emoji emoji-id='5274099962655816924'>❗️</tg-emoji><tg-emoji emoji-id='5274099962655816924'>❗️</tg-emoji><tg-emoji emoji-id='5274099962655816924'>❗️</tg-emoji><tg-emoji emoji-id='5274099962655816924'>❗️</tg-emoji><tg-emoji emoji-id='5274099962655816924'>❗️</tg-emoji><tg-emoji emoji-id='5274099962655816924'>❗️</tg-emoji><tg-emoji emoji-id='5274099962655816924'>❗️</tg-emoji>\n\nhttps://youtu.be/q1a8FZ8T4XU?si=bMvgGhQ1Ru6nLayx\n\n👆👆 WATCH MY TRADING JOURNEY VIDEO\n( MUST WATCH ) <tg-emoji emoji-id='5424972470023104089'>🔥</tg-emoji> 📣</b>"
+REM2_CAP = '<b><tg-emoji emoji-id=\'5395695537687123235\'>🚨</tg-emoji> DON\'T SKIP | VIDEO OPEN KAR <tg-emoji emoji-id=\'5395695537687123235\'>🚨</tg-emoji>\n<tg-emoji emoji-id=\'5210956306952758910\'>👀</tg-emoji> Proof dekh le pehle, phir decision lena\n\n<tg-emoji emoji-id=\'5231200819986047254\'>📊</tg-emoji> TODAY\'S LIVE TRADING RESULTS\n\n<tg-emoji emoji-id=\'5402477260982731644\'>☀️</tg-emoji> Morning Session\n<tg-emoji emoji-id=\'6185707729009512236\'>👉</tg-emoji> 2 Signals → 2/2 WIN\n<tg-emoji emoji-id=\'5210952531676504517\'>❌</tg-emoji> No Martingale | <tg-emoji emoji-id=\'5424972470023104089\'>🔥</tg-emoji> Deep Win\n\n<tg-emoji emoji-id=\'5402477260982731644\'>☀️</tg-emoji> Afternoon Session\n<tg-emoji emoji-id=\'6185707729009512236\'>👉</tg-emoji> 2 Signals → 2/2 WIN\n<tg-emoji emoji-id=\'5210952531676504517\'>❌</tg-emoji> No Martingale | <tg-emoji emoji-id=\'5427168083074628963\'>💎</tg-emoji> Deep Win\n\n<tg-emoji emoji-id=\'5449569374065152798\'>🌛</tg-emoji> Evening Session\n<tg-emoji emoji-id=\'6185707729009512236\'>👉</tg-emoji> 3 Signals\n<tg-emoji emoji-id=\'5389006967937184376\'>🤔</tg-emoji> 3 Direct Win\n<tg-emoji emoji-id=\'5210952531676504517\'>❌</tg-emoji> No Martingale | <tg-emoji emoji-id=\'5427168083074628963\'>💎</tg-emoji> Deep Win\n\n<tg-emoji emoji-id=\'5210956306952758910\'>👀</tg-emoji> YESTERDAY RESULT\n- 17 WIN / 0 LOSS <tg-emoji emoji-id=\'5424972470023104089\'>🔥</tg-emoji><tg-emoji emoji-id=\'5409048419211682843\'>💵</tg-emoji><tg-emoji emoji-id=\'5244837092042750681\'>📈</tg-emoji>\n\n<tg-emoji emoji-id=\'5443038326535759644\'>💬</tg-emoji> VIP join karna hai?\n<tg-emoji emoji-id=\'5253742260054409879\'>✉️</tg-emoji> Message "VIP" ➡️ @TRADELIKENOAH</b>'
+REM3_CAP = "<b>TRADER OF THE WEEK <tg-emoji emoji-id='5316961893728926221'>🦁</tg-emoji><tg-emoji emoji-id='5413566144986503832'>🏆</tg-emoji>\n<tg-emoji emoji-id='5274099962655816924'>❗️</tg-emoji><tg-emoji emoji-id='5274099962655816924'>❗️</tg-emoji><tg-emoji emoji-id='5274099962655816924'>❗️</tg-emoji><tg-emoji emoji-id='5274099962655816924'>❗️</tg-emoji><tg-emoji emoji-id='5274099962655816924'>❗️</tg-emoji><tg-emoji emoji-id='5274099962655816924'>❗️</tg-emoji><tg-emoji emoji-id='5274099962655816924'>❗️</tg-emoji><tg-emoji emoji-id='5274099962655816924'>❗️</tg-emoji>\n\nhttps://youtu.be/q1a8FZ8T4XU?si=bMvgGhQ1Ru6nLayx\n\n👆👆 WATCH HOW I MADE $40,000\n( ₹35,00,000 ) IN A WEEK <tg-emoji emoji-id='5424972470023104089'>🔥</tg-emoji><tg-emoji emoji-id='5395695537687123235'>🚨</tg-emoji></b>"
+REM4_CAP = '<b>₹1,000 se ₹5,00,000 — sirf mere VIP signals follow karke <tg-emoji emoji-id=\'5409048419211682843\'>💵</tg-emoji><tg-emoji emoji-id=\'5244837092042750681\'>📈</tg-emoji>\n\nYe koi kahani nahi, real results hain. <tg-emoji emoji-id=\'5224607267797606837\'>☄️</tg-emoji>\n\nMy VIP member booked Z900 bike <tg-emoji emoji-id=\'5260295181852225992\'>😱</tg-emoji><tg-emoji emoji-id=\'5256228126995787725\'>🏍</tg-emoji>\n\n<tg-emoji emoji-id=\'5264919878082509254\'>▶️</tg-emoji> LIVE VIDEO PROOF CHECK NOW 👆👆\n\nAaj bhi agar tum VIP channel join nahi kar rahe,\ntoh honestly tum apna hi nuksaan kar rahe ho.\n\n⌛ Time waste mat karo.\n<tg-emoji emoji-id=\'5188481279963715781\'>🚀</tg-emoji> Next success story tumhari ho sakti hai\n\n<tg-emoji emoji-id=\'5253742260054409879\'>✉️</tg-emoji> JOIN NOW — Message me "VIP"\n<tg-emoji emoji-id=\'5201990176175299013\'>📱</tg-emoji> MESSAGE HERE ➡️ @TRADELIKENOAH</b>'
+REM5_CAP = '<b>Bhai, aaj is photo mein tu mere maa-baap ko dekh raha hoga <tg-emoji emoji-id=\'5337080053119336309\'>👍</tg-emoji>\nUnke face ki khushi notice kar… aaj woh kitna proud feel karte hain <tg-emoji emoji-id=\'5391320026869408028\'>🫂</tg-emoji>\nUnhone mere saath kitni gaadiyaan dekhi <tg-emoji emoji-id=\'5253752975997803460\'>🚘</tg-emoji>\nKitni jagah world mein ghoome <tg-emoji emoji-id=\'5224450179368767019\'>🌍</tg-emoji>\nAaj woh khud bolte hain — "tere jaisa beta sabko mile."\n\nLekin sach kya hai?\nYeh sab ek din mein nahi hua.\nIske peeche sirf ek cheez thi — PAISA <tg-emoji emoji-id=\'5409048419211682843\'>💵</tg-emoji>\n\nAgar tu bhi chahta hai ki ek din tere maa-baap bhi proud feel karein,\nLog bolein — "Bhai, kya beta paida kiya hai!"\n\nAur agar tujhe genuinely paisa kamana hai,\nHigh quality trading signals chahiye,\nToh abhi meri ID par message kar — " VIP " ➡️ @TRADELIKENOAH</b>'
+REM_BTN_PLAY = "<tg-emoji emoji-id='5264919878082509254'>▶️</tg-emoji> Watch Video Click Here"
+REM_BTN_KEY = "<tg-emoji emoji-id='5278573677900752088'>🔑</tg-emoji> Register Your Account"
+REM_BTN_MAIL = "<tg-emoji emoji-id='5253742260054409879'>✉️</tg-emoji> Contact Support 24/7"
+
 async def send_one_reminder(chat_id, bot, reminder_num):
     """Send a single reminder by number (1-5)"""
+    r1_cap = REM1_CAP
+    r2_cap = REM2_CAP
+    r3_cap = REM3_CAP
+    r4_cap = REM4_CAP
+    r5_cap = REM5_CAP
+    yt = "https://youtu.be/q1a8FZ8T4XU?si=bMvgGhQ1Ru6nLayx"
+    btn_13 = InlineKeyboardMarkup([
+        [InlineKeyboardButton(REM_BTN_PLAY, url=yt)],
+        [InlineKeyboardButton(REM_BTN_KEY, callback_data="registered")],
+        [InlineKeyboardButton(REM_BTN_MAIL, url=SUPPORT)],
+    ])
+    btn_245 = InlineKeyboardMarkup([
+        [InlineKeyboardButton(REM_BTN_KEY, callback_data="registered")],
+        [InlineKeyboardButton(REM_BTN_MAIL, url=SUPPORT)],
+    ])
     try:
         if reminder_num == 1:
-            await bot.send_photo(
-                chat_id=chat_id,
-                photo="AgACAgUAAxkBAAIIhmosfzneQ76I3CuhlSHtj80p5vazAALCEGsbrGtoVSAOT8CWevovAQADAgADeQADPAQ",
-                caption="ZERO TO HERO JOURNEY VIDEO 📌❗️❗️❗️❗️❗️❗️❗️❗️\nhttps://youtu.be/q1a8FZ8T4XU?si=bMvgGhQ1Ru6nLayx\n👆👆WATCH MY TRADING JOURNEY VIDEO ( MUST WATCH ) 🔥📣"
-            )
-            await bot.send_video_note(
-                chat_id=chat_id,
-                video_note="DQACAgUAAxkBAAFMSQhqLIb67doN1uewmuPt5oUt44kzOQACdR4AAqxraFW9yKKdMgc2AjwE",
-                reply_markup=InlineKeyboardMarkup([
-                    [InlineKeyboardButton("▶️ Watch Video Click Here", url="https://youtu.be/q1a8FZ8T4XU?si=bMvgGhQ1Ru6nLayx")],
-                    [InlineKeyboardButton("🔑 Register Your Account", callback_data="registered")],
-                    [InlineKeyboardButton("✉️ Contact Support 24/7", url=SUPPORT)],
-                ])
-            )
+            await bot.send_photo(chat_id=chat_id, photo="AgACAgUAAxkBAAIIhmosfzneQ76I3CuhlSHtj80p5vazAALCEGsbrGtoVSAOT8CWevovAQADAgADeQADPAQ", caption=r1_cap, parse_mode="HTML")
+            await bot.send_video_note(chat_id=chat_id, video_note="DQACAgUAAxkBAAFMSQhqLIb67doN1uewmuPt5oUt44kzOQACdR4AAqxraFW9yKKdMgc2AjwE", reply_markup=btn_13)
         elif reminder_num == 2:
-            await bot.send_video(
-                chat_id=chat_id,
-                video="BAACAgUAAxkBAAFMSPJqLIWlmSn5W5Vl0YtME2reEchEvgACoB0AAmnTSFQUiVIEIzqvlDwE",
-                caption=(
-                    "🚨DON'T SKIP | VIDEO OPEN KAR 🚨\n"
-                    "👀 Proof dekh le pehle, phir decision lena\n\n"
-                    "📊 TODAY'S LIVE TRADING RESULTS\n\n"
-                    "☀️ Morning Session\n👉 2 Signals → 2/2 WIN\n❌ No Martingale | 🔥 Deep Win\n\n"
-                    "☀️ Afternoon Session\n👉 2 Signals → 2/2 WIN\n❌ No Martingale | 💎 Deep Win\n\n"
-                    "🌛 Evening Session\n👉 3 Signals\n🤔 3 Direct Win\n❌ No Martingale | 💎 Deep Win\n\n"
-                    "👀 YESTERDAY RESULT\n- 17 WIN / 0 LOSS 🔥💵📈\n\n"
-                    "💬 VIP join karna hai?\n✉️ Message \"VIP\" ➡️ @TRADELIKENOAH"
-                ),
-                reply_markup=InlineKeyboardMarkup([
-                    [InlineKeyboardButton("🔑 Register Your Account", callback_data="registered")],
-                    [InlineKeyboardButton("✉️ Contact Support 24/7", url=SUPPORT)],
-                ])
-            )
+            await bot.send_video(chat_id=chat_id, video="BAACAgUAAxkBAAFMSPJqLIWlmSn5W5Vl0YtME2reEchEvgACoB0AAmnTSFQUiVIEIzqvlDwE", caption=r2_cap, parse_mode="HTML", reply_markup=btn_245)
         elif reminder_num == 3:
-            await bot.send_photo(
-                chat_id=chat_id,
-                photo="AgACAgUAAxkBAAIIh2osfzsGVAMzCEnZf_8G2pjVFN3oAALDEGsbrGtoVYaoZ4WKYIjGAQADAgADeQADPAQ",
-                caption="TRADER OF THE WEEK 🦁🏆❗️❗️❗️❗️❗️❗️❗️❗️\nhttps://youtu.be/q1a8FZ8T4XU?si=bMvgGhQ1Ru6nLayx\n👆👆WATCH HOW I MADE $40,000 ( ₹35,00,000 ) IN A WEEK 🔥🚨"
-            )
-            await bot.send_video_note(
-                chat_id=chat_id,
-                video_note="DQACAgUAAxkBAAFMSQpqLIcHtKjTGEyoV6FLw6eHtiakFAACdh4AAqxraFXB9SIHnO1XujwE",
-                reply_markup=InlineKeyboardMarkup([
-                    [InlineKeyboardButton("▶️ Watch Video Click Here", url="https://youtu.be/q1a8FZ8T4XU?si=bMvgGhQ1Ru6nLayx")],
-                    [InlineKeyboardButton("🔑 Register Your Account", callback_data="registered")],
-                    [InlineKeyboardButton("✉️ Contact Support 24/7", url=SUPPORT)],
-                ])
-            )
+            await bot.send_photo(chat_id=chat_id, photo="AgACAgUAAxkBAAIIh2osfzsGVAMzCEnZf_8G2pjVFN3oAALDEGsbrGtoVYaoZ4WKYIjGAQADAgADeQADPAQ", caption=r3_cap, parse_mode="HTML")
+            await bot.send_video_note(chat_id=chat_id, video_note="DQACAgUAAxkBAAFMSQpqLIcHtKjTGEyoV6FLw6eHtiakFAACdh4AAqxraFXB9SIHnO1XujwE", reply_markup=btn_13)
         elif reminder_num == 4:
-            await bot.send_video(
-                chat_id=chat_id,
-                video="BAACAgUAAxkBAAFMSPZqLIWx4pTuzb98rHinaimoXeAyUQACnCEAAtCiOFSei_vCioOGDzwE",
-                caption=(
-                    "₹1,000 se ₹5,00,000 — sirf mere VIP signals follow karke 💵📈\n\n"
-                    "Ye koi kahani nahi, real results hain. ☄️\n\n"
-                    "My VIP member booked Z900 bike 😱🏍\n\n"
-                    "▶️LIVE VIDEO PROOF CHECK NOW 👆👆\n\n"
-                    "Aaj bhi agar tum VIP channel join nahi kar rahe,\n"
-                    "toh honestly tum apna hi nuksaan kar rahe ho.\n\n"
-                    "⌛ Time waste mat karo.\n"
-                    "🚀 Next success story tumhari ho sakti hai\n\n"
-                    "✉️ JOIN NOW — Message me \"VIP\"\n"
-                    "📱 MESSAGE HERE ➡️ @TRADELIKENOAH"
-                ),
-                reply_markup=InlineKeyboardMarkup([
-                    [InlineKeyboardButton("🔑 Register Your Account", callback_data="registered")],
-                    [InlineKeyboardButton("✉️ Contact Support 24/7", url=SUPPORT)],
-                ])
-            )
+            await bot.send_video(chat_id=chat_id, video="BAACAgUAAxkBAAFMSPZqLIWx4pTuzb98rHinaimoXeAyUQACnCEAAtCiOFSei_vCioOGDzwE", caption=r4_cap, parse_mode="HTML", reply_markup=btn_245)
         elif reminder_num == 5:
-            await bot.send_photo(
-                chat_id=chat_id,
-                photo="AgACAgUAAxkBAAIIoWoshS8UEUP49vFEPnYbcVsdp1G7AALEEGsbrGtoVeld-Rt8y727AQADAgADeQADPAQ",
-                caption=(
-                    "Bhai, aaj is photo mein tu mere maa-baap ko dekh raha hoga 👍\n"
-                    "Unke face ki khushi notice kar… aaj woh kitna proud feel karte hain 🫂\n"
-                    "Unhone mere saath kitni gaadiyaan dekhi 🚘\n"
-                    "Kitni jagah world mein ghoome 🌎\n"
-                    "Aaj woh khud bolte hain — \"tere jaisa beta sabko mile.\"\n\n"
-                    "Lekin sach kya hai? Yeh sab ek din mein nahi hua.\n"
-                    "Iske peeche sirf ek cheez thi — PAISA 💵\n\n"
-                    "Agar tu bhi chahta hai ki ek din tere maa-baap bhi proud feel karein,\n"
-                    "Log bolein — \"Bhai, kya beta paida kiya hai!\"\n\n"
-                    "Aur agar tujhe genuinely paisa kamana hai,\n"
-                    "High quality trading signals chahiye,\n"
-                    "Toh abhi meri ID par message kar — \" VIP \" ➡️ @TRADELIKENOAH"
-                ),
-                reply_markup=InlineKeyboardMarkup([
-                    [InlineKeyboardButton("🔑 Register Your Account", callback_data="registered")],
-                    [InlineKeyboardButton("✉️ Contact Support 24/7", url=SUPPORT)],
-                ])
-            )
+            await bot.send_photo(chat_id=chat_id, photo="AgACAgUAAxkBAAIIoWoshS8UEUP49vFEPnYbcVsdp1G7AALEEGsbrGtoVeld-Rt8y727AQADAgADeQADPAQ", caption=r5_cap, parse_mode="HTML", reply_markup=btn_245)
     except Exception as e:
         print(f"Reminder {reminder_num} error: {e}")
 
