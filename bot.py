@@ -615,6 +615,8 @@ async def handle_telegram(request):
     return web.Response(text="OK")
 
 async def main():
+    import telegram
+    print(f"python-telegram-bot version: {telegram.__version__}")
     global tg_app
     tg_app = ApplicationBuilder().token(TOKEN).build()
     tg_app.add_handler(CommandHandler("start", start))
