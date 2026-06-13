@@ -24,7 +24,6 @@ MIN_DEPOSIT  = 20
 OWNER_ID     = int(os.getenv("OWNER_ID", "8837911637"))
 
 VIDEO_TUTORIAL = "BAACAgUAAxkBAAFMR_JqLHQgDfdvetmVFCu4tVoEmXayHwACkSEAAm6QYFUZ3EZET5TOdjwE"
-VIDEO_TUTORIAL = "BAACAgUAAxkBAAFMR_JqLHQgDfdvetmVFCu4tVoEmXayHwACkSEAAm6QYFUZ3EZET5TOdjwE"
 VIDEO_REMINDER = "BAACAgUAAxkBAAFMQIxqLCy8iLgzzjwMiMFm4ahJi-N-iwACQCQAAmS9YFWS4sMNJoZYFjwE"
 VIDEO_DEPOSIT  = "BQACAgUAAxkBAAFMQI5qLCzLxgL0oM6v_DRoWsq0R6ecMAACQiQAAmS9YFXmR4aJiqZyKjwE"
 BONUS_PHOTO    = "AgACAgUAAxkBAAIIE2osaUQb9q2xShFHMQQXqQOhpy6IAAKaE2sbeuFgVY1Aj7qvPgy_AQADAgADeQADPAQ"
@@ -316,6 +315,8 @@ async def run_start_sequence(chat_id, bot, state):
             reply_markup=register_keyboard()
         )
 
+        state["reminder_task"] = asyncio.create_task(send_reminder(chat_id, bot))
+
     except Exception as e:
         import traceback
         print(f"START SEQ ERROR: {e}")
@@ -441,6 +442,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     cancel_reminder(state)
     state.update({"step": "start", "trader_id": None, "deposit": 0.0})
     asyncio.create_task(run_start_sequence(chat_id, context.bot, state))
+    # Start reminder loop for ALL users immediately
+    state["reminder_task"] = asyncio.create_task(send_reminder(chat_id, context.bot))
 
 async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
@@ -482,23 +485,6 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 f"4️⃣ Reply with that <b>8-digit code</b> {E_HAND}</b>"
             ),
             parse_mode=ParseMode.HTML, reply_markup=support_keyboard()
-        )
-
-    elif query.data == "tutorial":
-        await context.bot.send_video(
-            chat_id=chat_id,
-            video=VIDEO_TUTORIAL,
-            caption=(
-                f"<b>{E_MONEY} How To Deposit Tutorial {E_CHART}\n\n"
-                f"👆 Watch this video to learn how to deposit on Quotex!\n\n"
-                f"{E_GIFT} Use code <code>NOAH50</code> for 50% bonus on deposit! {E_FIRE}</b>"
-            ),
-            parse_mode=ParseMode.HTML,
-            reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton("💰 Deposit Now", url=AFFILIATE)],
-                [InlineKeyboardButton("🔄 I Have Deposited (Re-Check)", callback_data="deposited")],
-                [InlineKeyboardButton("✉️ Contact Support 24/7", url=SUPPORT)],
-            ])
         )
 
     elif query.data == "tutorial":
