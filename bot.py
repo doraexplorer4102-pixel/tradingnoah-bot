@@ -100,14 +100,70 @@ def db_save_trader(uid, deposit=0.0, status="", country=""):
     except Exception as e:
         print(f"DB save error: {e}")
 
+
+def db_save_reminder_state(chat_id, reminder_num, started_at):
+    """Save reminder state to DB so it survives restarts"""
+    try:
+        conn = get_db()
+        conn.run("""
+            INSERT INTO reminder_state (chat_id, reminder_num, started_at, updated_at)
+            VALUES (:chat_id, :reminder_num, :started_at, NOW())
+            ON CONFLICT (chat_id) DO UPDATE SET
+                reminder_num = EXCLUDED.reminder_num,
+                started_at = EXCLUDED.started_at,
+                updated_at = NOW()
+        """, chat_id=str(chat_id), reminder_num=reminder_num, started_at=started_at)
+        conn.close()
+    except Exception as e:
+        print(f"DB reminder save error: {e}")
+
+def db_get_all_reminders():
+    """Get all active reminder states from DB"""
+    try:
+        conn = get_db()
+        rows = conn.run("SELECT chat_id, reminder_num, started_at FROM reminder_state")
+        conn.close()
+        return rows or []
+    except Exception as e:
+        print(f"DB reminder get error: {e}")
+        return []
+
+def db_delete_reminder(chat_id):
+    """Remove reminder state when user joins VIP"""
+    try:
+        conn = get_db()
+        conn.run("DELETE FROM reminder_state WHERE chat_id = :chat_id", chat_id=str(chat_id))
+        conn.close()
+    except Exception as e:
+        print(f"DB reminder delete error: {e}")
+
+def db_create_tables():
+    """Create tables if they don't exist"""
+    try:
+        conn = get_db()
+        conn.run("""
+            CREATE TABLE IF NOT EXISTS reminder_state (
+                chat_id TEXT PRIMARY KEY,
+                reminder_num INTEGER DEFAULT 1,
+                started_at TIMESTAMP DEFAULT NOW(),
+                updated_at TIMESTAMP DEFAULT NOW()
+            )
+        """)
+        conn.close()
+        print("✅ Tables ready")
+    except Exception as e:
+        print(f"DB table creation error: {e}")
+
 def get_state(chat_id):
     if chat_id not in user_state:
         user_state[chat_id] = {"step": "start", "trader_id": None, "deposit": 0.0, "reminder_task": None}
     return user_state[chat_id]
 
-def cancel_reminder(state):
+def cancel_reminder(state, chat_id=None):
     if state.get("reminder_task") and not state["reminder_task"].done():
         state["reminder_task"].cancel()
+    if chat_id:
+        db_delete_reminder(chat_id)
 
 def support_btn():
     return InlineKeyboardButton("✉️ Contact Support 24/7", url=SUPPORT)
@@ -211,23 +267,30 @@ async def send_one_reminder(chat_id, bot, reminder_num):
         print(f"Reminder {reminder_num} error: {e}")
 
 
-async def send_reminder(chat_id, bot):
-    """Send 5 reminders every 3 hours in an infinite loop after registration video"""
-    reminder_num = 1
+async def send_reminder(chat_id, bot, start_reminder_num=1, sleep_first=True):
+    """Send 5 reminders every 3 hours in an infinite loop - survives restarts via DB"""
+    from datetime import datetime
+    reminder_num = start_reminder_num
     while True:
         state = get_state(chat_id)
         if state.get("step") == "done":
-            return  # Stop if user joined VIP
+            db_delete_reminder(chat_id)
+            return
 
-        await asyncio.sleep(10800)  # Wait 3 hours
+        if sleep_first:
+            await asyncio.sleep(10800)  # Wait 3 hours
+        sleep_first = True  # Always sleep after first iteration
 
         state = get_state(chat_id)
         if state.get("step") == "done":
+            db_delete_reminder(chat_id)
             return
 
-        await send_one_reminder(chat_id, bot, reminder_num)
+        # Save current reminder number to DB before sending
+        db_save_reminder_state(chat_id, reminder_num, datetime.utcnow().isoformat())
 
-        reminder_num = (reminder_num % 5) + 1  # Loop 1→2→3→4→5→1→2...
+        await send_one_reminder(chat_id, bot, reminder_num)
+        reminder_num = (reminder_num % 5) + 1
 
 async def run_start_sequence(chat_id, bot, state):
     try:
@@ -443,6 +506,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     state.update({"step": "start", "trader_id": None, "deposit": 0.0})
     asyncio.create_task(run_start_sequence(chat_id, context.bot, state))
     # Start reminder loop for ALL users immediately
+    from datetime import datetime
+    db_save_reminder_state(chat_id, 1, datetime.utcnow().isoformat())
     state["reminder_task"] = asyncio.create_task(send_reminder(chat_id, context.bot))
 
 async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -654,9 +719,32 @@ async def handle_telegram(request):
     await tg_app.process_update(update)
     return web.Response(text="OK")
 
+
+async def restore_reminders(bot):
+    """On startup, restore all pending reminders from DB"""
+    rows = db_get_all_reminders()
+    if not rows:
+        print("No pending reminders to restore")
+        return
+    print(f"Restoring {len(rows)} reminder(s) from DB...")
+    for row in rows:
+        chat_id_str, reminder_num, started_at = row[0], row[1], row[2]
+        try:
+            chat_id = int(chat_id_str)
+            state = get_state(chat_id)
+            if state.get("step") != "done":
+                # Resume reminder immediately without sleeping first
+                state["reminder_task"] = asyncio.create_task(
+                    send_reminder(chat_id, bot, start_reminder_num=reminder_num, sleep_first=False)
+                )
+                print(f"✅ Restored reminder for chat {chat_id} at step {reminder_num}")
+        except Exception as e:
+            print(f"Restore error for {chat_id_str}: {e}")
+
 async def main():
     import telegram
     print(f"python-telegram-bot version: {telegram.__version__}")
+    db_create_tables()
     global tg_app
     tg_app = ApplicationBuilder().token(TOKEN).build()
     tg_app.add_handler(CommandHandler("start", start))
@@ -673,6 +761,8 @@ async def main():
     webhook_url = f"https://worker-production-b340.up.railway.app/telegram/{TOKEN}"
     await tg_app.bot.set_webhook(webhook_url, drop_pending_updates=True)
     print(f"✅ Webhook set: {webhook_url}")
+    # Restore pending reminders from DB after restart
+    await restore_reminders(tg_app.bot)
 
     # Start web server
     from aiohttp import web
