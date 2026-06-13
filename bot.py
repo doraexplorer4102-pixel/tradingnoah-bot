@@ -15,6 +15,9 @@ from telegram.ext import (
 from telegram.constants import ParseMode
 import pg8000.native
 
+GEMINI_API_KEY = "AQ.Ab8RN6L7VyiPMMoRrpjUF1d1Pb9Un1jIlxozvWr1ed2NEFNBbg"
+GEMINI_URL     = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
+
 TOKEN        = "8972809832:AAHKRaXFTjyVvCSgQP7Rfcrk97vRXL2nO90"
 VIP_LINK     = "https://t.me/+H3isrme8c3BiNDg1"
 AFFILIATE    = "https://broker-qx.pro/sign-up/?lid=1504736"
@@ -56,6 +59,59 @@ E_NEW     = pe("5382357040008021292", "🆕")
 E_PERSON  = pe("5217797330861826981", "👩‍💻")
 
 user_state: dict = {}
+ai_history: dict = {}  # Stores per-user conversation history for Gemini
+
+AI_SYSTEM_PROMPT = """You are a helpful assistant for Trading Noah Bot — a Telegram bot run by Noah, a professional trader.
+
+Your job is to chat with users in a friendly, natural way. Users may write in Hindi, English, or Hinglish (mix of both). Always reply in the SAME language the user writes in. If they write in Hindi, reply in Hindi. If English, reply in English. If Hinglish, reply in Hinglish.
+
+Key information about this bot:
+- Noah is a professional Quotex trader who runs VIP trading signals
+- To join VIP, users must register on Quotex using Noah's link and deposit minimum $20
+- VIP gives access to 10-20 daily sureshot trading signals
+- Promo code NOAH50 gives 50% deposit bonus
+- Support contact: @TRADELIKENOAH
+
+Your rules:
+1. Be friendly, casual and encouraging like a helpful friend
+2. Always push users toward registering on Quotex and joining VIP
+3. If someone asks about VIP, tell them to register and deposit $20 minimum
+4. If someone asks about signals, tell them VIP members get 10-20 daily signals
+5. Keep replies SHORT — max 3-4 lines
+6. Use emojis naturally
+7. Never share personal info or make up trading results
+8. If someone seems confused, guide them to click the buttons in the bot"""
+
+
+async def ask_gemini(chat_id: int, user_text: str) -> str:
+    """Send message to Gemini and return reply, keeping conversation history"""
+    import aiohttp, json
+    # Keep last 10 messages per user to stay within free limits
+    if chat_id not in ai_history:
+        ai_history[chat_id] = []
+    ai_history[chat_id].append({"role": "user", "parts": [{"text": user_text}]})
+    if len(ai_history[chat_id]) > 10:
+        ai_history[chat_id] = ai_history[chat_id][-10:]
+    payload = {
+        "system_instruction": {"parts": [{"text": AI_SYSTEM_PROMPT}]},
+        "contents": ai_history[chat_id]
+    }
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.post(
+                GEMINI_URL,
+                headers={"Content-Type": "application/json", "X-goog-api-key": GEMINI_API_KEY},
+                json=payload,
+                timeout=aiohttp.ClientTimeout(total=15)
+            ) as resp:
+                data = await resp.json()
+                reply = data["candidates"][0]["content"]["parts"][0]["text"].strip()
+                # Save assistant reply to history
+                ai_history[chat_id].append({"role": "model", "parts": [{"text": reply}]})
+                return reply
+    except Exception as e:
+        print(f"Gemini error: {e}")
+        return "Sorry bro, AI is busy right now. Please try again in a moment! 🙏"
 
 def get_db():
     ctx = ssl.create_default_context()
@@ -629,19 +685,32 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
     state = get_state(chat_id)
     text = update.message.text.strip()
+
     if state["step"] == "awaiting_id":
         if not text.isdigit():
-            await update.message.reply_text(
-                f"<b>{E_WARN} Please send only numbers (e.g. <code>89057949</code>) {E_HAND}</b>",
-                parse_mode=ParseMode.HTML, reply_markup=support_keyboard()
-            )
+            # Not a trader ID — let AI reply instead
+            await context.bot.send_chat_action(chat_id=chat_id, action="typing")
+            reply = await ask_gemini(chat_id, text)
+            await update.message.reply_text(reply)
             return
         state["step"] = "checking"
         asyncio.create_task(verify_id_then_respond(text, chat_id, context.bot))
+
     elif state["step"] == "awaiting_deposit":
         if text.isdigit():
             state["step"] = "checking"
             asyncio.create_task(verify_id_then_respond(text, chat_id, context.bot))
+        else:
+            # Normal chat — AI replies
+            await context.bot.send_chat_action(chat_id=chat_id, action="typing")
+            reply = await ask_gemini(chat_id, text)
+            await update.message.reply_text(reply)
+
+    else:
+        # Any other step (start, done, checking) — AI replies to normal messages
+        await context.bot.send_chat_action(chat_id=chat_id, action="typing")
+        reply = await ask_gemini(chat_id, text)
+        await update.message.reply_text(reply)
 
 
 async def handle_postback(request):
