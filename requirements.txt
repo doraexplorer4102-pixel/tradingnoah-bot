@@ -1,3 +1,3 @@
-python-telegram-bot[all] @ git+https://github.com/python-telegram-bot/python-telegram-bot.git@master
+python-telegram-bot==22.6
 pg8000==1.30.5
 aiohttp==3.9.5
