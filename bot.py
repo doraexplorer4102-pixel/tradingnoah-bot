@@ -85,32 +85,42 @@ Your rules:
 
 async def ask_gemini(chat_id: int, user_text: str) -> str:
     """Send message to Gemini and return reply, keeping conversation history"""
-    import aiohttp, json
+    import json, urllib.request, urllib.error
     # Keep last 10 messages per user to stay within free limits
     if chat_id not in ai_history:
         ai_history[chat_id] = []
     ai_history[chat_id].append({"role": "user", "parts": [{"text": user_text}]})
     if len(ai_history[chat_id]) > 10:
         ai_history[chat_id] = ai_history[chat_id][-10:]
-    payload = {
+    payload = json.dumps({
         "system_instruction": {"parts": [{"text": AI_SYSTEM_PROMPT}]},
         "contents": ai_history[chat_id]
-    }
+    }).encode("utf-8")
     try:
-        async with aiohttp.ClientSession() as session:
-            async with session.post(
+        loop = asyncio.get_event_loop()
+        def call_gemini():
+            req = urllib.request.Request(
                 GEMINI_URL,
-                headers={"Content-Type": "application/json", "X-goog-api-key": GEMINI_API_KEY},
-                json=payload,
-                timeout=aiohttp.ClientTimeout(total=15)
-            ) as resp:
-                data = await resp.json()
-                reply = data["candidates"][0]["content"]["parts"][0]["text"].strip()
-                # Save assistant reply to history
-                ai_history[chat_id].append({"role": "model", "parts": [{"text": reply}]})
-                return reply
+                data=payload,
+                headers={
+                    "Content-Type": "application/json",
+                    "X-goog-api-key": GEMINI_API_KEY
+                },
+                method="POST"
+            )
+            with urllib.request.urlopen(req, timeout=15) as resp:
+                return json.loads(resp.read())
+        data = await loop.run_in_executor(None, call_gemini)
+        reply = data["candidates"][0]["content"]["parts"][0]["text"].strip()
+        ai_history[chat_id].append({"role": "model", "parts": [{"text": reply}]})
+        print(f"✅ Gemini replied to chat {chat_id}")
+        return reply
+    except urllib.error.HTTPError as e:
+        body = e.read().decode("utf-8")
+        print(f"Gemini HTTP error {e.code}: {body}")
+        return "Sorry bro, AI is busy right now. Please try again in a moment! 🙏"
     except Exception as e:
-        print(f"Gemini error: {e}")
+        print(f"Gemini error: {type(e).__name__}: {e}")
         return "Sorry bro, AI is busy right now. Please try again in a moment! 🙏"
 
 def get_db():
