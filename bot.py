@@ -316,8 +316,6 @@ async def run_start_sequence(chat_id, bot, state):
             reply_markup=register_keyboard()
         )
 
-        state["reminder_task"] = asyncio.create_task(send_reminder(chat_id, bot))
-
     except Exception as e:
         import traceback
         print(f"START SEQ ERROR: {e}")
