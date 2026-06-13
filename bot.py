@@ -378,6 +378,8 @@ async def run_start_sequence(chat_id, bot, state):
             reply_markup=register_keyboard()
         )
 
+        from datetime import datetime
+        db_save_reminder_state(chat_id, 1, datetime.utcnow().isoformat())
         state["reminder_task"] = asyncio.create_task(send_reminder(chat_id, bot))
 
     except Exception as e:
@@ -387,7 +389,7 @@ async def run_start_sequence(chat_id, bot, state):
 
 async def verify_id_then_respond(uid, chat_id, bot):
     state = get_state(chat_id)
-    cancel_reminder(state)
+    cancel_reminder(state, chat_id)
 
     msg = await bot.send_message(
         chat_id=chat_id,
@@ -502,13 +504,10 @@ async def preview_reminder(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
     state = get_state(chat_id)
-    cancel_reminder(state)
-    state.update({"step": "start", "trader_id": None, "deposit": 0.0})
+    cancel_reminder(state, chat_id)
+    state.update({"step": "start", "trader_id": None, "deposit": 0.0, "reminder_task": None})
+    # Reminder is started ONLY inside run_start_sequence() after intro completes
     asyncio.create_task(run_start_sequence(chat_id, context.bot, state))
-    # Start reminder loop for ALL users immediately
-    from datetime import datetime
-    db_save_reminder_state(chat_id, 1, datetime.utcnow().isoformat())
-    state["reminder_task"] = asyncio.create_task(send_reminder(chat_id, context.bot))
 
 async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
