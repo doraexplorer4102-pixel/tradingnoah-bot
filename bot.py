@@ -15,8 +15,8 @@ from telegram.ext import (
 from telegram.constants import ParseMode
 import pg8000.native
 
-GEMINI_API_KEY = "AQ.Ab8RN6L7VyiPMMoRrpjUF1d1Pb9Un1jIlxozvWr1ed2NEFNBbg"
-GEMINI_URL     = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "AQ.Ab8RN6I9TTCCG9XXHQjlvZtNacGmtCL-C4m1Sb0PMl8B1gfohQ")
+GEMINI_URL     = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-latest:generateContent"
 
 TOKEN        = "8972809832:AAHKRaXFTjyVvCSgQP7Rfcrk97vRXL2nO90"
 VIP_LINK     = "https://t.me/+H3isrme8c3BiNDg1"
